@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.example.jwtjavaeight.mapper.RefreshTokenMapper">
+
+    <resultMap id="BaseResultMap" type="SysRefreshToken">
+        <id column="id" property="id"/>
+        <result column="user_id" property="userId"/>
+        <result column="token_hash" property="tokenHash"/>
+        <result column="expire_time" property="expireTime"/>
+        <result column="device_info" property="deviceInfo"/>
+        <result column="jti_id" property="jtiId"/>
+        <result column="create_time" property="createTime"/>
+    </resultMap>
+
+    <insert id="insert" parameterType="SysRefreshToken" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO sys_refresh_token (user_id, token_hash, expire_time, device_info, jti_id)
+        VALUES (#{userId}, #{tokenHash}, #{expireTime}, #{deviceInfo}, #{jtiId})
+    </insert>
+
+    <select id="findByTokenHash" resultMap="BaseResultMap">
+        SELECT id, user_id, token_hash, expire_time, device_info, jti_id, create_time
+        FROM sys_refresh_token
+        WHERE token_hash = #{tokenHash}
+    </select>
+
+    <delete id="deleteByUserId">
+        DELETE FROM sys_refresh_token
+        WHERE user_id = #{userId}
+    </delete>
+
+    <delete id="deleteByJtiId">
+        DELETE FROM sys_refresh_token
+        WHERE jti_id = #{jtiId}
+    </delete>
+
+</mapper>

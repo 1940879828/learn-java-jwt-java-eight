@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<profiles version="21">
+    <profile kind="CodeFormatterProfile" name="CustomParenthesis" version="21">
+        <!-- 关键设置：方法声明的括号位置 -->
+        <setting id="org.eclipse.jdt.core.formatter.parenthesis_positions_in_method_declaration" 
+                 value="SAME_LINE,COUNT_DEPENDENT"/>
+        
+        <!-- 可选：方法调用的括号位置（保持风格统一） -->
+        <setting id="org.eclipse.jdt.core.formatter.parenthesis_positions_in_method_invocation" 
+                 value="SAME_LINE,COUNT_DEPENDENT"/>
+        
+        <!-- 其他基础设置（可选调整） -->
+        <setting id="org.eclipse.jdt.core.formatter.tabulation.size" value="4"/>
+        <setting id="org.eclipse.jdt.core.formatter.tabulation.char" value="space"/>
+        <setting id="org.eclipse.jdt.core.formatter.lineSplit" value="120"/>
+        
+        <!-- 对齐设置（可选） -->
+        <setting id="org.eclipse.jdt.core.formatter.alignment_for_parameters" value="48"/>
+        <setting id="org.eclipse.jdt.core.formatter.alignment_for_arguments" value="48"/>
+    </profile>
+</profiles>

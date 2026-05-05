@@ -1,0 +1,18 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python -c \"import bcrypt; print\\(bcrypt.hashpw\\(b'123456', bcrypt.gensalt\\(10\\)\\).decode\\(\\)\\)\")",
+      "Bash(python3 -c \"import bcrypt; print\\(bcrypt.hashpw\\(b'123456', bcrypt.gensalt\\(10\\)\\).decode\\(\\)\\)\")",
+      "Bash(mvn clean *)",
+      "Bash(where mvn *)",
+      "Bash(ls /c/apache-maven*/bin/mvn.exe)",
+      "Read(//c/Users/**)",
+      "Bash(ls /c/Program*/Apache*/bin/mvn.exe)",
+      "Bash(cmd //c \"where mvn\")",
+      "Read(//c/Program Files/**)",
+      "Read(//c//**)",
+      "Bash(\"/c/Users/19408/.m2/wrapper/dists/apache-maven-3.9.14-bin/1cb7fhup6b5n3bed6kckbrnspv/apache-maven-3.9.14/bin/mvn\" clean *)",
+      "Bash(/d/maven/apache-maven-3.6.3/bin/mvn *)"
+    ]
+  }
+}
