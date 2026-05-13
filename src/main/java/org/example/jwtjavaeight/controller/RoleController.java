@@ -11,13 +11,13 @@ import java.util.List;
 import javax.validation.Valid;
 import org.example.jwtjavaeight.common.Result;
 import org.example.jwtjavaeight.domain.dto.AssignMenusRequest;
+import org.example.jwtjavaeight.domain.dto.MenuResponse;
 import org.example.jwtjavaeight.domain.dto.PageResponse;
 import org.example.jwtjavaeight.domain.dto.RoleCreateRequest;
 import org.example.jwtjavaeight.domain.dto.RoleQueryFilter;
 import org.example.jwtjavaeight.domain.dto.RoleResponse;
 import org.example.jwtjavaeight.domain.dto.RoleUpdateRequest;
 import org.example.jwtjavaeight.domain.dto.UserResponse;
-import org.example.jwtjavaeight.domain.entity.SysMenu;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -119,8 +119,8 @@ public class RoleController {
         @ApiResponse(responseCode = "404", description = "角色不存在", content = @Content(schema = @Schema(implementation = Result.class)))
     })
     @PreAuthorize("hasAuthority('role:list')")
-    public ResponseEntity<Result<List<SysMenu>>> getRoleMenus(@PathVariable Integer id) {
-        List<SysMenu> menus = roleService.findMenusByRoleId(id);
+    public ResponseEntity<Result<List<MenuResponse>>> getRoleMenus(@PathVariable Integer id) {
+        List<MenuResponse> menus = roleService.findMenusByRoleId(id);
         return ResponseEntity.ok(Result.success(menus));
     }
 

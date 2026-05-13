@@ -4,12 +4,12 @@ import java.util.List;
 import org.example.jwtjavaeight.domain.dto.ChangePasswordRequest;
 import org.example.jwtjavaeight.domain.dto.PageResponse;
 import org.example.jwtjavaeight.domain.dto.ResetPasswordRequest;
+import org.example.jwtjavaeight.domain.dto.RoleResponse;
 import org.example.jwtjavaeight.domain.dto.UserCreateRequest;
 import org.example.jwtjavaeight.domain.dto.UserDetailResponse;
 import org.example.jwtjavaeight.domain.dto.UserQueryFilter;
 import org.example.jwtjavaeight.domain.dto.UserResponse;
 import org.example.jwtjavaeight.domain.dto.UserUpdateRequest;
-import org.example.jwtjavaeight.domain.entity.SysRole;
 
 public interface UserService {
 
@@ -41,7 +41,7 @@ public interface UserService {
     /**
      * 查询用户的角色列表
      */
-    List<SysRole> findRolesByUserId(Long userId);
+    List<RoleResponse> findRolesByUserId(Long userId);
 
     /**
      * 全量替换用户角色

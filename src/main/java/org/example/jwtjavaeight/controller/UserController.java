@@ -14,12 +14,12 @@ import org.example.jwtjavaeight.domain.dto.AssignRolesRequest;
 import org.example.jwtjavaeight.domain.dto.ChangePasswordRequest;
 import org.example.jwtjavaeight.domain.dto.PageResponse;
 import org.example.jwtjavaeight.domain.dto.ResetPasswordRequest;
+import org.example.jwtjavaeight.domain.dto.RoleResponse;
 import org.example.jwtjavaeight.domain.dto.UserCreateRequest;
 import org.example.jwtjavaeight.domain.dto.UserDetailResponse;
 import org.example.jwtjavaeight.domain.dto.UserQueryFilter;
 import org.example.jwtjavaeight.domain.dto.UserResponse;
 import org.example.jwtjavaeight.domain.dto.UserUpdateRequest;
-import org.example.jwtjavaeight.domain.entity.SysRole;
 import org.example.jwtjavaeight.security.JwtUserDetails;
 import org.example.jwtjavaeight.service.UserService;
 import org.springframework.http.HttpStatus;
@@ -117,8 +117,8 @@ public class UserController {
         @ApiResponse(responseCode = "404", description = "用户不存在", content = @Content(schema = @Schema(implementation = Result.class)))
     })
     @PreAuthorize("hasAuthority('user:list')")
-    public ResponseEntity<Result<List<SysRole>>> getUserRoles(@PathVariable Long id) {
-        List<SysRole> roles = userService.findRolesByUserId(id);
+    public ResponseEntity<Result<List<RoleResponse>>> getUserRoles(@PathVariable Long id) {
+        List<RoleResponse> roles = userService.findRolesByUserId(id);
         return ResponseEntity.ok(Result.success(roles));
     }
 

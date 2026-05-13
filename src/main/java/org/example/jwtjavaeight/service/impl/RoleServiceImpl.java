@@ -2,6 +2,7 @@ package org.example.jwtjavaeight.service.impl;
 
 import java.util.List;
 import java.util.stream.Collectors;
+import org.example.jwtjavaeight.domain.dto.MenuResponse;
 import org.example.jwtjavaeight.domain.dto.PageResponse;
 import org.example.jwtjavaeight.domain.dto.RoleCreateRequest;
 import org.example.jwtjavaeight.domain.dto.RoleQueryFilter;
@@ -133,12 +134,40 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
-    public List<SysMenu> findMenusByRoleId(Integer roleId) {
+    public List<MenuResponse> findMenusByRoleId(Integer roleId) {
         SysRole role = roleMapper.findById(roleId);
         if (role == null) {
             throw new ResourceNotFoundException("Role", roleId);
         }
-        return menuMapper.findMenusByRoleId(roleId);
+        List<SysMenu> menus = menuMapper.findMenusByRoleId(roleId);
+        return menus.stream()
+                .map(this::convertMenuToResponse)
+                .collect(Collectors.toList());
+    }
+
+    private MenuResponse convertMenuToResponse(SysMenu menu) {
+        MenuResponse response = new MenuResponse();
+        response.setId(menu.getId());
+        response.setParentId(menu.getParentId());
+        response.setMenuName(menu.getMenuName());
+        response.setMenuCode(menu.getMenuCode());
+        response.setMenuType(menu.getMenuType() != null
+                ? org.example.jwtjavaeight.enums.MenuTypeEnum.fromCode(menu.getMenuType())
+                : null);
+        response.setPath(menu.getPath());
+        response.setComponent(menu.getComponent());
+        response.setPerms(menu.getPerms());
+        response.setIcon(menu.getIcon());
+        response.setSortOrder(menu.getSortOrder());
+        response.setVisible(menu.getVisible());
+        response.setStatus(menu.getStatus());
+        response.setCreateBy(menu.getCreateBy());
+        if (menu.getCreateTime() != null) {
+            response.setCreateTime(menu.getCreateTime().toInstant()
+                    .atOffset(java.time.ZoneOffset.UTC));
+        }
+        response.setRemark(menu.getRemark());
+        return response;
     }
 
     @Override

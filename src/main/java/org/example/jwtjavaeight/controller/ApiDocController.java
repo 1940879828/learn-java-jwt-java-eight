@@ -2,7 +2,6 @@ package org.example.jwtjavaeight.controller;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.swagger.v3.oas.annotations.Hidden;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import org.springframework.http.MediaType;
@@ -12,7 +11,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
 /** API 文档辅助控制器 用于导出 Schemas 等信息，方便复制给 AI 分析 */
-@Hidden
 @RestController
 @RequestMapping("/api/doc")
 public class ApiDocController {

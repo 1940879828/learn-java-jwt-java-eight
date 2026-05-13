@@ -16,8 +16,13 @@ public class JwtUserDetails implements UserDetails {
   private final String password;
   private final boolean enabled;
   private final boolean accountNonLocked;
+  private final Collection<? extends GrantedAuthority> authorities;
 
   public JwtUserDetails(SysUser sysUser) {
+    this(sysUser, Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER")));
+  }
+
+  public JwtUserDetails(SysUser sysUser, Collection<? extends GrantedAuthority> authorities) {
     this.userId = sysUser.getId();
     this.username = sysUser.getUsername();
     this.password = sysUser.getPassword();
@@ -25,6 +30,7 @@ public class JwtUserDetails implements UserDetails {
     // 检查账户是否锁定：如果有锁定时间且未过期，则账户被锁定
     Long lockRemaining = sysUser.getLockRemainingSeconds();
     this.accountNonLocked = !(lockRemaining != null && lockRemaining > 0);
+    this.authorities = authorities;
   }
 
   public Long getUserId() {
@@ -33,7 +39,7 @@ public class JwtUserDetails implements UserDetails {
 
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {
-    return Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER"));
+    return authorities;
   }
 
   @Override

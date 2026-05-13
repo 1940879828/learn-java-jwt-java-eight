@@ -1,14 +1,21 @@
 package org.example.jwtjavaeight.security;
 
+import org.example.jwtjavaeight.domain.entity.SysRole;
 import org.example.jwtjavaeight.domain.entity.SysUser;
 import org.example.jwtjavaeight.exception.UserDisabledException;
+import org.example.jwtjavaeight.mapper.RoleMapper;
 import org.example.jwtjavaeight.mapper.UserMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
@@ -16,9 +23,11 @@ public class UserDetailsServiceImpl implements UserDetailsService {
   private static final Logger log = LoggerFactory.getLogger(UserDetailsServiceImpl.class);
 
   private final UserMapper userMapper;
+  private final RoleMapper roleMapper;
 
-  public UserDetailsServiceImpl(UserMapper userMapper) {
+  public UserDetailsServiceImpl(UserMapper userMapper, RoleMapper roleMapper) {
     this.userMapper = userMapper;
+    this.roleMapper = roleMapper;
   }
 
   @Override
@@ -50,7 +59,28 @@ public class UserDetailsServiceImpl implements UserDetailsService {
       }
     }
 
-    log.debug("[UserDetails] 用户加载成功: {}", sysUser.getUsername());
-    return new JwtUserDetails(sysUser);
+    // 加载用户的角色
+    List<SysRole> roles = roleMapper.findRolesByUserId(sysUser.getId());
+    log.debug("[UserDetails] 用户 {} 拥有 {} 个角色", username, roles.size());
+
+    // 加载用户的权限
+    List<String> permissions = userMapper.findPermissionsByUserId(sysUser.getId());
+    log.debug("[UserDetails] 用户 {} 拥有 {} 个权限", username, permissions.size());
+
+    // 构建 GrantedAuthority 列表
+    List<GrantedAuthority> authorities = new ArrayList<>();
+
+    // 添加角色（以ROLE_开头）
+    for (SysRole role : roles) {
+      authorities.add(new SimpleGrantedAuthority(role.getRoleCode()));
+    }
+
+    // 添加权限
+    for (String perm : permissions) {
+      authorities.add(new SimpleGrantedAuthority(perm));
+    }
+
+    log.debug("[UserDetails] 用户加载成功: {}, 权限总数: {}", sysUser.getUsername(), authorities.size());
+    return new JwtUserDetails(sysUser, authorities);
   }
 }

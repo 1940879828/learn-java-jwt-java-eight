@@ -1,13 +1,13 @@
 package org.example.jwtjavaeight.service;
 
 import java.util.List;
+import org.example.jwtjavaeight.domain.dto.MenuResponse;
 import org.example.jwtjavaeight.domain.dto.PageResponse;
 import org.example.jwtjavaeight.domain.dto.RoleCreateRequest;
 import org.example.jwtjavaeight.domain.dto.RoleQueryFilter;
 import org.example.jwtjavaeight.domain.dto.RoleResponse;
 import org.example.jwtjavaeight.domain.dto.RoleUpdateRequest;
 import org.example.jwtjavaeight.domain.dto.UserResponse;
-import org.example.jwtjavaeight.domain.entity.SysMenu;
 import org.example.jwtjavaeight.domain.entity.SysRole;
 
 public interface RoleService {
@@ -39,7 +39,7 @@ public interface RoleService {
     /**
      * 查询角色的菜单列表
      */
-    List<SysMenu> findMenusByRoleId(Integer roleId);
+    List<MenuResponse> findMenusByRoleId(Integer roleId);
 
     /**
      * 全量替换角色菜单

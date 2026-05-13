@@ -12,7 +12,24 @@
       "Read(//c/Program Files/**)",
       "Read(//c//**)",
       "Bash(\"/c/Users/19408/.m2/wrapper/dists/apache-maven-3.9.14-bin/1cb7fhup6b5n3bed6kckbrnspv/apache-maven-3.9.14/bin/mvn\" clean *)",
-      "Bash(/d/maven/apache-maven-3.6.3/bin/mvn *)"
+      "Bash(/d/maven/apache-maven-3.6.3/bin/mvn *)",
+      "PowerShell(mysql *)",
+      "Bash(git add *)",
+      "Bash(git commit -m 'docs: add API optimization design specification *)",
+      "Bash(git commit -m 'docs: add API optimization implementation plan \\(Stage 1 detailed\\) *)",
+      "Bash(git commit -m 'feat: add ErrorCode enum with comprehensive error codes *)",
+      "Bash(git commit -m 'feat: add DataScopeEnum for role data scope *)",
+      "Bash(git commit -m 'feat: add MenuTypeEnum for menu type classification *)",
+      "Bash(git commit -m 'feat: enhance Result with traceId and timestamp *)",
+      "Bash(git commit -m 'feat: enhance BusinessException with ErrorCode and httpStatus *)",
+      "Bash(git commit -m 'feat: add ResourceNotFoundException for 404 errors *)",
+      "Bash(git commit -m 'feat: enhance GlobalExceptionHandler with comprehensive error handling *)",
+      "Bash(git commit -m 'feat: add PageResponse DTO for pagination *)",
+      "Bash(git commit -m 'feat: add PageRequest base class and query filter classes for pagination *)",
+      "Bash(git commit -m 'feat: add Role DTOs \\(CreateRequest, UpdateRequest, Response\\) *)",
+      "Bash(git commit -m 'feat: add User DTOs \\(CreateRequest, UpdateRequest, Response, DetailResponse, etc.\\) *)",
+      "PowerShell(git add *)",
+      "Bash(git commit *)"
     ]
   }
 }

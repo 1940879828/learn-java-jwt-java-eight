@@ -157,8 +157,25 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<SysRole> findRolesByUserId(Long userId) {
-        return roleMapper.findRolesByUserId(userId);
+    public List<org.example.jwtjavaeight.domain.dto.RoleResponse> findRolesByUserId(Long userId) {
+        List<SysRole> roles = roleMapper.findRolesByUserId(userId);
+        return roles.stream()
+                .map(this::convertRoleToResponse)
+                .collect(Collectors.toList());
+    }
+
+    private org.example.jwtjavaeight.domain.dto.RoleResponse convertRoleToResponse(SysRole role) {
+        org.example.jwtjavaeight.domain.dto.RoleResponse response = new org.example.jwtjavaeight.domain.dto.RoleResponse();
+        response.setId(role.getId());
+        response.setRoleCode(role.getRoleCode());
+        response.setRoleName(role.getRoleName());
+        response.setPermission(role.getPermission());
+        response.setLevel(role.getLevel());
+        if (role.getDataScope() != null) {
+            response.setDataScope(org.example.jwtjavaeight.enums.DataScopeEnum.valueOf(role.getDataScope()));
+        }
+        response.setRemark(role.getRemark());
+        return response;
     }
 
     @Override
