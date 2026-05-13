@@ -11,6 +11,8 @@ public interface UserMapper {
 
   SysUser findByUsernameWithLockInfo(@Param("username") String username);
 
+  SysUser findByEmail(@Param("email") String email);
+
   SysUser findById(@Param("id") Long id);
 
   int insert(SysUser user);
@@ -23,4 +25,9 @@ public interface UserMapper {
   int resetFailedAttempts(@Param("id") Long id);
 
   int unlockUser(@Param("id") Long id);
+
+  /**
+   * 根据用户ID查询权限列表
+   */
+  java.util.List<String> findPermissionsByUserId(@Param("userId") Long userId);
 }

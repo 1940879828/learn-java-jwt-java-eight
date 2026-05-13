@@ -6,6 +6,8 @@
         <id column="id" property="id"/>
         <result column="username" property="username"/>
         <result column="password" property="password"/>
+        <result column="email" property="email"/>
+        <result column="phone" property="phone"/>
         <result column="status" property="status"/>
         <result column="create_time" property="createTime"/>
         <result column="failed_attempts" property="failedAttempts"/>
@@ -14,19 +16,25 @@
     </resultMap>
 
     <select id="findByUsername" resultMap="BaseResultMap">
-        SELECT id, username, password, status, create_time, failed_attempts, lock_time
+        SELECT id, username, password, email, phone, status, create_time, failed_attempts, lock_time
         FROM sys_user
         WHERE username = #{username}
     </select>
 
     <select id="findById" resultMap="BaseResultMap">
-        SELECT id, username, password, status, create_time, failed_attempts, lock_time
+        SELECT id, username, password, email, phone, status, create_time, failed_attempts, lock_time
         FROM sys_user
         WHERE id = #{id}
     </select>
 
+    <select id="findByEmail" resultMap="BaseResultMap">
+        SELECT id, username, password, email, phone, status, create_time, failed_attempts, lock_time
+        FROM sys_user
+        WHERE email = #{email}
+    </select>
+
     <select id="findByUsernameWithLockInfo" resultMap="BaseResultMap">
-        SELECT id, username, password, status, create_time, failed_attempts, lock_time,
+        SELECT id, username, password, email, phone, status, create_time, failed_attempts, lock_time,
                CASE
                    WHEN lock_time IS NOT NULL THEN
                        GREATEST(0, 7200 - TIMESTAMPDIFF(SECOND, lock_time, NOW()))
@@ -37,8 +45,8 @@
     </select>
 
     <insert id="insert" parameterType="SysUser" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO sys_user (username, password, status, create_time)
-        VALUES (#{username}, #{password}, #{status}, #{createTime})
+        INSERT INTO sys_user (username, password, email, phone, status, create_time)
+        VALUES (#{username}, #{password}, #{email}, #{phone}, #{status}, #{createTime})
     </insert>
 
     <update id="incrementFailedAttempts">
@@ -63,5 +71,16 @@
         SET failed_attempts = 0, lock_time = NULL
         WHERE id = #{id}
     </update>
+
+    <select id="findPermissionsByUserId" resultType="java.lang.String">
+        SELECT DISTINCT m.perms
+        FROM sys_menu m
+        INNER JOIN sys_role_menu rm ON m.id = rm.menu_id
+        INNER JOIN sys_user_role ur ON rm.role_id = ur.role_id
+        WHERE ur.user_id = #{userId}
+          AND m.perms IS NOT NULL
+          AND m.perms != ''
+          AND m.status = 1
+    </select>
 
 </mapper>

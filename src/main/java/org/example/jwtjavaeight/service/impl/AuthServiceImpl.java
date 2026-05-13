@@ -9,6 +9,8 @@ import org.example.jwtjavaeight.domain.dto.RefreshRequest;
 import org.example.jwtjavaeight.domain.dto.RegisterRequest;
 import org.example.jwtjavaeight.domain.entity.SysRefreshToken;
 import org.example.jwtjavaeight.domain.entity.SysUser;
+import org.example.jwtjavaeight.enums.ErrorCode;
+import org.example.jwtjavaeight.exception.BusinessException;
 import org.example.jwtjavaeight.exception.TokenExpiredException;
 import org.example.jwtjavaeight.exception.UsernameExistsException;
 import org.example.jwtjavaeight.mapper.RefreshTokenMapper;
@@ -49,7 +51,7 @@ public class AuthServiceImpl implements AuthService {
   @Override
   @Transactional
   public void register(RegisterRequest registerRequest) {
-    log.info("[AuthService] 开始注册, 用户名: {}", registerRequest.getUsername());
+    log.info("[AuthService] 开始注册, 用户名: {}, 邮箱: {}", registerRequest.getUsername(), registerRequest.getEmail());
 
     SysUser existingUser = userMapper.findByUsername(registerRequest.getUsername());
     if (existingUser != null) {
@@ -57,9 +59,16 @@ public class AuthServiceImpl implements AuthService {
       throw new UsernameExistsException();
     }
 
+    SysUser existingEmail = userMapper.findByEmail(registerRequest.getEmail());
+    if (existingEmail != null) {
+      log.warn("[AuthService] 注册失败, 邮箱已存在: {}", registerRequest.getEmail());
+      throw new BusinessException(ErrorCode.DUPLICATE_RESOURCE, "邮箱已被注册");
+    }
+
     SysUser user = new SysUser();
     user.setUsername(registerRequest.getUsername());
     user.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
+    user.setEmail(registerRequest.getEmail());
     user.setStatus(1);
     user.setCreateTime(new Date());
 

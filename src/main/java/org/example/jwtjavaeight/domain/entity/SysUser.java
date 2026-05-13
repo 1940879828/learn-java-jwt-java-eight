@@ -15,6 +15,10 @@ public class SysUser {
   private String username;
   /** 密码 */
   private String password;
+  /** 邮箱 */
+  private String email;
+  /** 手机号 */
+  private String phone;
   /** 状态（1-启用 0-禁用） */
   private Integer status;
   /** 创建时间 */
