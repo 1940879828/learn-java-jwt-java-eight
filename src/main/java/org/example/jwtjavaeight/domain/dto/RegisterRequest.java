@@ -2,6 +2,7 @@ package org.example.jwtjavaeight.domain.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.io.Serializable;
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
@@ -29,4 +30,10 @@ public class RegisterRequest implements Serializable {
   @Size(min = 6, max = 20, message = "密码长度必须在6-20个字符之间")
   @Schema(description = "密码", example = "123456")
   private String password;
+
+  /** 邮箱 */
+  @Email(message = "邮箱格式不正确")
+  @NotBlank(message = "邮箱不能为空")
+  @Schema(description = "邮箱", example = "user@example.com")
+  private String email;
 }
