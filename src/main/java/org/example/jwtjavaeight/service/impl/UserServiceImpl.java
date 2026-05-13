@@ -169,7 +169,6 @@ public class UserServiceImpl implements UserService {
         response.setId(role.getId());
         response.setRoleCode(role.getRoleCode());
         response.setRoleName(role.getRoleName());
-        response.setPermission(role.getPermission());
         response.setLevel(role.getLevel());
         if (role.getDataScope() != null) {
             response.setDataScope(org.example.jwtjavaeight.enums.DataScopeEnum.valueOf(role.getDataScope()));

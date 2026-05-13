@@ -1,5 +1,7 @@
 package org.example.jwtjavaeight.domain.dto;
 
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Set;
 
 public class UserQueryFilter extends PageRequest {
@@ -10,7 +12,7 @@ public class UserQueryFilter extends PageRequest {
 
     @Override
     protected Set<String> allowedSortColumns() {
-        return Set.of("id", "username", "create_time");
+        return new HashSet<>(Arrays.asList("id", "username", "create_time"));
     }
 
     // Getters and Setters

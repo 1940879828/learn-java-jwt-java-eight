@@ -1,5 +1,7 @@
 package org.example.jwtjavaeight.domain.dto;
 
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Set;
 
 public class RoleQueryFilter extends PageRequest {
@@ -9,7 +11,7 @@ public class RoleQueryFilter extends PageRequest {
 
     @Override
     protected Set<String> allowedSortColumns() {
-        return Set.of("id", "role_code", "role_name", "level", "create_time");
+        return new HashSet<>(Arrays.asList("id", "role_code", "role_name", "level", "create_time"));
     }
 
     // Getters and Setters
