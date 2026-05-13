@@ -100,7 +100,7 @@ public class MenuServiceImpl implements MenuService {
         menu.setPerms(request.getPerms());
         menu.setIcon(request.getIcon());
         menu.setSortOrder(request.getSortOrder());
-        menu.setVisible(request.getVisible());
+        menu.setVisible(request.getVisible() != null && request.getVisible() ? 1 : 0);
         menu.setStatus(request.getStatus());
         menu.setRemark(request.getRemark());
 
@@ -125,7 +125,7 @@ public class MenuServiceImpl implements MenuService {
         updateMenu.setPerms(request.getPerms());
         updateMenu.setIcon(request.getIcon());
         updateMenu.setSortOrder(request.getSortOrder());
-        updateMenu.setVisible(request.getVisible());
+        updateMenu.setVisible(request.getVisible() != null && request.getVisible() ? 1 : 0);
         updateMenu.setStatus(request.getStatus());
         updateMenu.setRemark(request.getRemark());
 
@@ -170,7 +170,7 @@ public class MenuServiceImpl implements MenuService {
         response.setPerms(menu.getPerms());
         response.setIcon(menu.getIcon());
         response.setSortOrder(menu.getSortOrder());
-        response.setVisible(menu.getVisible());
+        response.setVisible(menu.getVisible() != null && menu.getVisible() == 1);
         response.setStatus(menu.getStatus());
         response.setCreateBy(menu.getCreateBy());
         if (menu.getCreateTime() != null) {
@@ -200,7 +200,7 @@ public class MenuServiceImpl implements MenuService {
                 node.setPerms(menu.getPerms());
                 node.setIcon(menu.getIcon());
                 node.setSortOrder(menu.getSortOrder());
-                node.setVisible(menu.getVisible());
+                node.setVisible(menu.getVisible() != null && menu.getVisible() == 1);
                 node.setStatus(menu.getStatus());
                 node.setCreateBy(menu.getCreateBy());
                 if (menu.getCreateTime() != null) {

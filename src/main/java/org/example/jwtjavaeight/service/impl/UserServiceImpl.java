@@ -193,7 +193,7 @@ public class UserServiceImpl implements UserService {
                     .map(roleId -> {
                         SysUserRole userRole = new SysUserRole();
                         userRole.setUserId(userId);
-                        userRole.setRoleId(roleId);
+                        userRole.setRoleId(roleId.intValue());
                         return userRole;
                     })
                     .collect(Collectors.toList());
@@ -214,7 +214,7 @@ public class UserServiceImpl implements UserService {
 
         List<SysUserRole> existingRoles = userRoleMapper.findByUserId(userId);
         List<Long> existingRoleIds = existingRoles.stream()
-                .map(SysUserRole::getRoleId)
+                .map(ur -> ur.getRoleId().longValue())
                 .collect(Collectors.toList());
 
         List<SysUserRole> newRoles = roleIds.stream()
@@ -222,7 +222,7 @@ public class UserServiceImpl implements UserService {
                 .map(roleId -> {
                     SysUserRole userRole = new SysUserRole();
                     userRole.setUserId(userId);
-                    userRole.setRoleId(roleId);
+                    userRole.setRoleId(roleId.intValue());
                     return userRole;
                 })
                 .collect(Collectors.toList());

@@ -71,7 +71,7 @@ public class MenuController {
     })
     @PreAuthorize("hasAuthority('menu:list')")
     public ResponseEntity<Result<MenuResponse>> getMenuById(@PathVariable Integer id) {
-        MenuResponse response = menuService.findById(id);
+        MenuResponse response = menuService.findByIdDto(id);
         return ResponseEntity.ok(Result.success(response));
     }
 

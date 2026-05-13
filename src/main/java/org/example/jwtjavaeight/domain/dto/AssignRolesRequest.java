@@ -10,5 +10,5 @@ import java.util.List;
 @Setter
 public class AssignRolesRequest {
     @NotEmpty(message = "角色ID列表不能为空")
-    private List<Integer> roleIds;
+    private List<Long> roleIds;
 }

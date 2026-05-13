@@ -147,7 +147,7 @@ public class RoleServiceImpl implements RoleService {
 
     private MenuResponse convertMenuToResponse(SysMenu menu) {
         MenuResponse response = new MenuResponse();
-        response.setId(menu.getId());
+        response.setId(menu.getId() != null ? menu.getId().longValue() : null);
         response.setParentId(menu.getParentId());
         response.setMenuName(menu.getMenuName());
         response.setMenuCode(menu.getMenuCode());
@@ -159,7 +159,7 @@ public class RoleServiceImpl implements RoleService {
         response.setPerms(menu.getPerms());
         response.setIcon(menu.getIcon());
         response.setSortOrder(menu.getSortOrder());
-        response.setVisible(menu.getVisible());
+        response.setVisible(menu.getVisible() != null && menu.getVisible() == 1);
         response.setStatus(menu.getStatus());
         response.setCreateBy(menu.getCreateBy());
         if (menu.getCreateTime() != null) {
