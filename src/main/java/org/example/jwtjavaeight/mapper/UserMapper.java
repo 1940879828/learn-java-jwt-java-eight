@@ -1,7 +1,9 @@
 package org.example.jwtjavaeight.mapper;
 
+import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+import org.example.jwtjavaeight.domain.dto.UserQueryFilter;
 import org.example.jwtjavaeight.domain.entity.SysUser;
 
 @Mapper
@@ -29,5 +31,35 @@ public interface UserMapper {
   /**
    * 根据用户ID查询权限列表
    */
-  java.util.List<String> findPermissionsByUserId(@Param("userId") Long userId);
+  List<String> findPermissionsByUserId(@Param("userId") Long userId);
+
+  /**
+   * 分页查询用户列表
+   */
+  List<SysUser> findByFilter(@Param("filter") UserQueryFilter filter);
+
+  /**
+   * 统计符合条件的用户总数
+   */
+  long countByFilter(@Param("filter") UserQueryFilter filter);
+
+  /**
+   * 更新用户信息
+   */
+  int updateById(SysUser user);
+
+  /**
+   * 删除用户（软删除，设置status=0）
+   */
+  int deleteById(@Param("id") Long id);
+
+  /**
+   * 锁定用户
+   */
+  int lockUser(@Param("id") Long id);
+
+  /**
+   * 更新用户密码
+   */
+  int updatePassword(@Param("id") Long id, @Param("password") String password);
 }

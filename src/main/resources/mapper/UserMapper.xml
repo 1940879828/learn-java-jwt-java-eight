@@ -83,4 +83,94 @@
           AND m.status = 1
     </select>
 
+    <select id="findByFilter" resultMap="BaseResultMap">
+        SELECT id, username, password, email, phone, status, create_time, failed_attempts, lock_time
+        FROM sys_user
+        <where>
+            <if test="filter.keyword != null and filter.keyword != ''">
+                AND (username LIKE CONCAT('%', #{filter.keyword}, '%')
+                     OR email LIKE CONCAT('%', #{filter.keyword}, '%'))
+            </if>
+            <if test="filter.status != null">
+                AND status = #{filter.status}
+            </if>
+            <if test="filter.locked != null">
+                <if test="filter.locked">
+                    AND lock_time IS NOT NULL AND TIMESTAMPDIFF(SECOND, lock_time, NOW()) &lt; 7200
+                </if>
+                <if test="!filter.locked">
+                    AND (lock_time IS NULL OR TIMESTAMPDIFF(SECOND, lock_time, NOW()) &gt;= 7200)
+                </if>
+            </if>
+            <if test="filter.roleId != null">
+                AND id IN (SELECT user_id FROM sys_user_role WHERE role_id = #{filter.roleId})
+            </if>
+        </where>
+        ORDER BY
+        <choose>
+            <when test="filter.sort == 'username'">username</when>
+            <when test="filter.sort == 'createTime'">create_time</when>
+            <otherwise>id</otherwise>
+        </choose>
+        <choose>
+            <when test="filter.order == 'desc'">DESC</when>
+            <otherwise>ASC</otherwise>
+        </choose>
+        LIMIT #{filter.offset}, #{filter.size}
+    </select>
+
+    <select id="countByFilter" resultType="long">
+        SELECT COUNT(*)
+        FROM sys_user
+        <where>
+            <if test="filter.keyword != null and filter.keyword != ''">
+                AND (username LIKE CONCAT('%', #{filter.keyword}, '%')
+                     OR email LIKE CONCAT('%', #{filter.keyword}, '%'))
+            </if>
+            <if test="filter.status != null">
+                AND status = #{filter.status}
+            </if>
+            <if test="filter.locked != null">
+                <if test="filter.locked">
+                    AND lock_time IS NOT NULL AND TIMESTAMPDIFF(SECOND, lock_time, NOW()) &lt; 7200
+                </if>
+                <if test="!filter.locked">
+                    AND (lock_time IS NULL OR TIMESTAMPDIFF(SECOND, lock_time, NOW()) &gt;= 7200)
+                </if>
+            </if>
+            <if test="filter.roleId != null">
+                AND id IN (SELECT user_id FROM sys_user_role WHERE role_id = #{filter.roleId})
+            </if>
+        </where>
+    </select>
+
+    <update id="updateById" parameterType="SysUser">
+        UPDATE sys_user
+        <set>
+            <if test="username != null">username = #{username},</if>
+            <if test="email != null">email = #{email},</if>
+            <if test="phone != null">phone = #{phone},</if>
+            <if test="status != null">status = #{status},</if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+    <update id="deleteById">
+        UPDATE sys_user
+        SET status = 0
+        WHERE id = #{id}
+    </update>
+
+    <update id="lockUser">
+        UPDATE sys_user
+        SET lock_time = NOW(), failed_attempts = 5
+        WHERE id = #{id}
+    </update>
+
+    <update id="updatePassword">
+        UPDATE sys_user
+        SET password = #{password}
+        WHERE id = #{id}
+    </update>
+
 </mapper>
