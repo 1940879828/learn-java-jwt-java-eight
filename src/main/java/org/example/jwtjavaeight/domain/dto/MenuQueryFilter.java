@@ -7,7 +7,7 @@ public class MenuQueryFilter extends PageRequest {
     private Integer menuType;
     private Integer visible;
     private Integer status;
-    private Long parentId;
+    private Integer parentId;
 
     @Override
     protected Set<String> allowedSortColumns() {
@@ -47,11 +47,11 @@ public class MenuQueryFilter extends PageRequest {
         this.status = status;
     }
 
-    public Long getParentId() {
+    public Integer getParentId() {
         return parentId;
     }
 
-    public void setParentId(Long parentId) {
+    public void setParentId(Integer parentId) {
         this.parentId = parentId;
     }
 }

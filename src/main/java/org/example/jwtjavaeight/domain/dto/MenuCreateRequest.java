@@ -9,7 +9,7 @@ import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 public class MenuCreateRequest {
-    private Long parentId;
+    private Integer parentId;
 
     @NotBlank
     @Size(max = 32)
@@ -46,11 +46,11 @@ public class MenuCreateRequest {
     private String remark;
 
     // Getters and Setters
-    public Long getParentId() {
+    public Integer getParentId() {
         return parentId;
     }
 
-    public void setParentId(Long parentId) {
+    public void setParentId(Integer parentId) {
         this.parentId = parentId;
     }
 

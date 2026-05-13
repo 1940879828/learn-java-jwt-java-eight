@@ -6,7 +6,7 @@ import java.time.OffsetDateTime;
 
 public class MenuResponse {
     private Long id;
-    private Long parentId;
+    private Integer parentId;
     private String menuName;
     private String menuCode;
     private MenuTypeEnum menuType;
@@ -30,11 +30,11 @@ public class MenuResponse {
         this.id = id;
     }
 
-    public Long getParentId() {
+    public Integer getParentId() {
         return parentId;
     }
 
-    public void setParentId(Long parentId) {
+    public void setParentId(Integer parentId) {
         this.parentId = parentId;
     }
 
