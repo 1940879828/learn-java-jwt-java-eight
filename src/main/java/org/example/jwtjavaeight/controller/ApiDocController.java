@@ -2,20 +2,28 @@ package org.example.jwtjavaeight.controller;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Profile;
 import org.springframework.http.MediaType;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
-/** API 文档辅助控制器 用于导出 Schemas 等信息，方便复制给 AI 分析 */
+@Profile("!prod")
 @RestController
 @RequestMapping("/api/doc")
+@Tag(name = "开发工具", description = "仅限非生产环境")
 public class ApiDocController {
 
   private final ObjectMapper objectMapper;
+
+  @Value("${server.port:8080}")
+  private int serverPort;
 
   public ApiDocController(ObjectMapper objectMapper) {
     this.objectMapper = objectMapper;
@@ -24,13 +32,14 @@ public class ApiDocController {
   /** 获取 OpenAPI 文档 */
   private JsonNode getOpenApiDoc() throws Exception {
     RestTemplate restTemplate = new RestTemplate();
-    String apiDocsUrl = "http://localhost:8080/v3/api-docs";
+    String apiDocsUrl = "http://localhost:" + serverPort + "/v3/api-docs";
     String json = restTemplate.getForObject(apiDocsUrl, String.class);
     return objectMapper.readTree(json);
   }
 
   /** 导出所有 Schemas 定义 访问: http://localhost:8080/api/doc/schemas */
   @GetMapping(value = "/schemas", produces = MediaType.APPLICATION_JSON_VALUE)
+  @PreAuthorize("hasAuthority('system:dev-tools')")
   public Map<String, Object> getSchemas() {
     try {
       JsonNode openApiDoc = getOpenApiDoc();
@@ -62,6 +71,7 @@ public class ApiDocController {
 
   /** 导出完整的 OpenAPI 文档 访问: http://localhost:8080/api/doc/full */
   @GetMapping(value = "/full", produces = MediaType.APPLICATION_JSON_VALUE)
+  @PreAuthorize("hasAuthority('system:dev-tools')")
   public JsonNode getFullApiDoc() {
     try {
       return getOpenApiDoc();
@@ -75,6 +85,7 @@ public class ApiDocController {
 
   /** 导出精简的 Schemas（仅包含字段定义，更适合 AI 阅读） 访问: http://localhost:8080/api/doc/schemas-simple */
   @GetMapping(value = "/schemas-simple", produces = MediaType.TEXT_PLAIN_VALUE)
+  @PreAuthorize("hasAuthority('system:dev-tools')")
   public String getSchemasSimple() {
     try {
       JsonNode openApiDoc = getOpenApiDoc();
