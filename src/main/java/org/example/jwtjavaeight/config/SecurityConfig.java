@@ -64,6 +64,14 @@ public class SecurityConfig {
   public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
     AuthenticationManager authenticationManager =
         authenticationConfiguration.getAuthenticationManager();
+
+    // 创建登录过滤器
+    JwtLoginFilter loginFilter = new JwtLoginFilter(
+        authenticationManager,
+        loginSuccessHandler,
+        loginFailureHandler
+    );
+
     http.csrf(AbstractHttpConfigurer::disable)
         .cors(cors -> cors.configurationSource(corsConfigurationSource()))
         .sessionManagement(
@@ -95,9 +103,8 @@ public class SecurityConfig {
                     .accessDeniedHandler(securityExceptionHandler))
         .authenticationProvider(
             new JwtAuthenticationProvider(userDetailsService, passwordEncoder()))
-        .addFilterBefore(
-            new JwtLoginFilter(authenticationManager, loginSuccessHandler, loginFailureHandler),
-            UsernamePasswordAuthenticationFilter.class)
+        // 注意顺序：先添加登录过滤器，再添加JWT认证过滤器
+        .addFilterBefore(loginFilter, UsernamePasswordAuthenticationFilter.class)
         .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
     return http.build();

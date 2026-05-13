@@ -33,14 +33,8 @@ public class AuthController {
     this.authService = authService;
   }
 
-  @PostMapping("/login")
-  @Operation(
-      summary = "用户登录",
-      description =
-          "用户名+密码登录，返回 Access Token 和 Refresh Token。注意：实际请求由 JwtLoginFilter 在 Filter 链中拦截处理，此接口仅用于 Swagger 文档展示")
-  public Result<LoginResponse> login(@Valid @RequestBody LoginRequest loginRequest) {
-    throw new RuntimeException("此接口由 JwtLoginFilter 拦截处理，不应到达 Controller");
-  }
+  // 注意：/login 端点由 JwtLoginFilter 在过滤器链中处理，不需要 Controller 方法
+  // 如需 Swagger 文档，可以使用 @Hidden 注解或在 OpenAPI 配置中手动添加
 
   @PostMapping("/register")
   @Operation(summary = "用户注册", description = "注册新用户账号")
