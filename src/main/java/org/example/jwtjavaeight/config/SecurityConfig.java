@@ -71,10 +71,13 @@ public class SecurityConfig {
         .authorizeRequests(
             authz ->
                 authz
-                    .antMatchers("/auth/**")
+                    // 认证接口白名单
+                    .antMatchers("/api/v1/auth/**")
                     .permitAll()
+                    // 开发工具接口白名单（仅非生产环境）
                     .antMatchers("/api/doc/**")
                     .permitAll()
+                    // Swagger文档接口白名单
                     .antMatchers(
                         "/swagger-ui.html",
                         "/swagger-ui/**",
@@ -82,6 +85,7 @@ public class SecurityConfig {
                         "/v3/api-docs/**",
                         "/webjars/**")
                     .permitAll()
+                    // 其他接口需要认证
                     .anyRequest()
                     .authenticated())
         .exceptionHandling(
