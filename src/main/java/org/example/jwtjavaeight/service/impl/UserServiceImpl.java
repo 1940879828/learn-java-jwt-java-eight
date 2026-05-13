@@ -77,7 +77,7 @@ public class UserServiceImpl implements UserService {
         UserDetailResponse response = new UserDetailResponse();
         BeanUtils.copyProperties(convertToResponse(user), response);
 
-        List<SysRole> roles = findRolesByUserId(id);
+        List<org.example.jwtjavaeight.domain.dto.RoleResponse> roles = findRolesByUserId(id);
         response.setRoles(roles);
 
         List<String> permissions = userMapper.findPermissionsByUserId(id);
@@ -166,9 +166,10 @@ public class UserServiceImpl implements UserService {
 
     private org.example.jwtjavaeight.domain.dto.RoleResponse convertRoleToResponse(SysRole role) {
         org.example.jwtjavaeight.domain.dto.RoleResponse response = new org.example.jwtjavaeight.domain.dto.RoleResponse();
-        response.setId(role.getId());
+        response.setId(role.getId() != null ? role.getId().longValue() : null);
         response.setRoleCode(role.getRoleCode());
         response.setRoleName(role.getRoleName());
+        response.setPermission(role.getPermission());
         response.setLevel(role.getLevel());
         if (role.getDataScope() != null) {
             response.setDataScope(org.example.jwtjavaeight.enums.DataScopeEnum.valueOf(role.getDataScope()));

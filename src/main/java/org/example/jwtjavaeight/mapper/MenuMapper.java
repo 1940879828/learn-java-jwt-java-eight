@@ -2,6 +2,7 @@ package org.example.jwtjavaeight.mapper;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+import org.example.jwtjavaeight.domain.dto.MenuQueryFilter;
 import org.example.jwtjavaeight.domain.entity.SysMenu;
 
 import java.util.List;
@@ -42,4 +43,14 @@ public interface MenuMapper {
      * 删除菜单
      */
     int deleteById(@Param("id") Integer id);
+
+    /**
+     * 根据过滤条件分页查询菜单
+     */
+    List<SysMenu> findByFilter(@Param("filter") MenuQueryFilter filter);
+
+    /**
+     * 根据过滤条件统计菜单数量
+     */
+    long countByFilter(@Param("filter") MenuQueryFilter filter);
 }

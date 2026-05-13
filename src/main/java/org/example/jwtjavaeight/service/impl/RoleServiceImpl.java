@@ -221,7 +221,7 @@ public class RoleServiceImpl implements RoleService {
 
         // This would require a new UserMapper method, but for now we'll return empty list
         // or implement it differently
-        return List.of();
+        return java.util.Collections.emptyList();
     }
 
     @Override
@@ -236,7 +236,7 @@ public class RoleServiceImpl implements RoleService {
 
     private RoleResponse convertToResponse(SysRole role) {
         RoleResponse response = new RoleResponse();
-        response.setId(role.getId());
+        response.setId(role.getId() != null ? role.getId().longValue() : null);
         response.setRoleCode(role.getRoleCode());
         response.setRoleName(role.getRoleName());
         response.setPermission(role.getPermission());

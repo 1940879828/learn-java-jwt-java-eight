@@ -8,6 +8,7 @@ public class RoleResponse {
     private Long id;
     private String roleCode;
     private String roleName;
+    private String permission;
     private Integer level;
     private DataScopeEnum dataScope;
     private String createBy;
@@ -37,6 +38,14 @@ public class RoleResponse {
 
     public void setRoleName(String roleName) {
         this.roleName = roleName;
+    }
+
+    public String getPermission() {
+        return permission;
+    }
+
+    public void setPermission(String permission) {
+        this.permission = permission;
     }
 
     public Integer getLevel() {

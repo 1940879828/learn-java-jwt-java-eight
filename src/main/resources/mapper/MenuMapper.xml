@@ -83,4 +83,61 @@
         DELETE FROM sys_menu WHERE id = #{id}
     </delete>
 
+    <select id="findByFilter" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List"/>
+        FROM sys_menu
+        <where>
+            <if test="filter.keyword != null and filter.keyword != ''">
+                AND (menu_name LIKE CONCAT('%', #{filter.keyword}, '%')
+                OR menu_code LIKE CONCAT('%', #{filter.keyword}, '%'))
+            </if>
+            <if test="filter.menuType != null">
+                AND menu_type = #{filter.menuType}
+            </if>
+            <if test="filter.visible != null">
+                AND visible = #{filter.visible}
+            </if>
+            <if test="filter.status != null">
+                AND status = #{filter.status}
+            </if>
+            <if test="filter.parentId != null">
+                AND parent_id = #{filter.parentId}
+            </if>
+        </where>
+        ORDER BY
+        <choose>
+            <when test="filter.safeSort == 'sort_order'">sort_order</when>
+            <when test="filter.safeSort == 'create_time'">create_time</when>
+            <otherwise>id</otherwise>
+        </choose>
+        <choose>
+            <when test="filter.safeOrder == 'desc'">DESC</when>
+            <otherwise>ASC</otherwise>
+        </choose>
+        LIMIT #{filter.size} OFFSET #{filter.offset}
+    </select>
+
+    <select id="countByFilter" resultType="long">
+        SELECT COUNT(*)
+        FROM sys_menu
+        <where>
+            <if test="filter.keyword != null and filter.keyword != ''">
+                AND (menu_name LIKE CONCAT('%', #{filter.keyword}, '%')
+                OR menu_code LIKE CONCAT('%', #{filter.keyword}, '%'))
+            </if>
+            <if test="filter.menuType != null">
+                AND menu_type = #{filter.menuType}
+            </if>
+            <if test="filter.visible != null">
+                AND visible = #{filter.visible}
+            </if>
+            <if test="filter.status != null">
+                AND status = #{filter.status}
+            </if>
+            <if test="filter.parentId != null">
+                AND parent_id = #{filter.parentId}
+            </if>
+        </where>
+    </select>
+
 </mapper>

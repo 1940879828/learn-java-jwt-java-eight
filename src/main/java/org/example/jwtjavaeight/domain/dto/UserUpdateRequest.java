@@ -11,6 +11,8 @@ public class UserUpdateRequest {
     @Pattern(regexp = "^1[3-9]\\d{9}$")
     private String phone;
 
+    private Integer status;
+
     @Size(max = 255)
     private String remark;
 
@@ -29,6 +31,14 @@ public class UserUpdateRequest {
 
     public void setPhone(String phone) {
         this.phone = phone;
+    }
+
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
     }
 
     public String getRemark() {

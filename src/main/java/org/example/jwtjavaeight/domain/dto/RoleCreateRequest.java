@@ -19,6 +19,9 @@ public class RoleCreateRequest {
     @Size(max = 32)
     private String roleName;
 
+    @Size(max = 100)
+    private String permission;
+
     @Min(0)
     @Max(9)
     private Integer level;
@@ -44,6 +47,14 @@ public class RoleCreateRequest {
 
     public void setRoleName(String roleName) {
         this.roleName = roleName;
+    }
+
+    public String getPermission() {
+        return permission;
+    }
+
+    public void setPermission(String permission) {
+        this.permission = permission;
     }
 
     public Integer getLevel() {
