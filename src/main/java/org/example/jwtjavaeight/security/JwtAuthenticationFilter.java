@@ -11,7 +11,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.example.jwtjavaeight.common.Result;
-import org.example.jwtjavaeight.common.ResultCode;
+import org.example.jwtjavaeight.enums.ErrorCode;
 import org.example.jwtjavaeight.config.JwtConfig;
 import org.example.jwtjavaeight.constants.SecurityConstants;
 import org.example.jwtjavaeight.utils.JwtUtil;
@@ -91,7 +91,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     response
         .getWriter()
         .write(
-            JSONUtil.toJsonStr(Result.failure(ResultCode.UNAUTHORIZED.getCode(), "Token已过期或无效")));
+            JSONUtil.toJsonStr(Result.failure(ErrorCode.UNAUTHORIZED.getCode(), "Token已过期或无效")));
   }
 
   private org.example.jwtjavaeight.domain.entity.SysUser buildUserEntity(

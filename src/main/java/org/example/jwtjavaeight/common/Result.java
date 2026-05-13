@@ -26,8 +26,8 @@ public class Result<T> implements Serializable {
 
   public static <T> Result<T> success(T data) {
     Result<T> result = new Result<>();
-    result.setCode(ResultCode.SUCCESS.getCode());
-    result.setMessage(ResultCode.SUCCESS.getMessage());
+    result.setCode(ErrorCode.SUCCESS.getCode());
+    result.setMessage(ErrorCode.SUCCESS.getMessage());
     result.setData(data);
     result.setTraceId(MDC.get("traceId"));
     result.setTimestamp(OffsetDateTime.now());
@@ -36,8 +36,8 @@ public class Result<T> implements Serializable {
 
   public static <T> Result<T> success() {
     Result<T> result = new Result<>();
-    result.setCode(ResultCode.SUCCESS.getCode());
-    result.setMessage(ResultCode.SUCCESS.getMessage());
+    result.setCode(ErrorCode.SUCCESS.getCode());
+    result.setMessage(ErrorCode.SUCCESS.getMessage());
     result.setTraceId(MDC.get("traceId"));
     result.setTimestamp(OffsetDateTime.now());
     return result;

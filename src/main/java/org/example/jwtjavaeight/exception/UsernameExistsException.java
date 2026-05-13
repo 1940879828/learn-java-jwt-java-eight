@@ -1,15 +1,15 @@
 package org.example.jwtjavaeight.exception;
 
-import org.example.jwtjavaeight.common.ResultCode;
+import org.example.jwtjavaeight.enums.ErrorCode;
 
 /** 用户名已存在异常 */
 public class UsernameExistsException extends BusinessException {
 
   public UsernameExistsException() {
-    super(ResultCode.USERNAME_EXISTS.getCode(), ResultCode.USERNAME_EXISTS.getMessage());
+    super(ErrorCode.DUPLICATE_RESOURCE, "用户名已存在");
   }
 
   public UsernameExistsException(String message) {
-    super(ResultCode.USERNAME_EXISTS.getCode(), message);
+    super(ErrorCode.DUPLICATE_RESOURCE, message);
   }
 }

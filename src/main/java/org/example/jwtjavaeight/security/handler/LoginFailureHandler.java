@@ -6,7 +6,7 @@ import java.util.Date;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.example.jwtjavaeight.common.Result;
-import org.example.jwtjavaeight.common.ResultCode;
+import org.example.jwtjavaeight.enums.ErrorCode;
 import org.example.jwtjavaeight.constants.SecurityConstants;
 import org.example.jwtjavaeight.domain.dto.LoginFailureData;
 import org.example.jwtjavaeight.domain.entity.SysLoginLog;
@@ -109,7 +109,7 @@ public class LoginFailureHandler implements AuthenticationFailureHandler {
         .write(
             JSONUtil.toJsonStr(
                 Result.failure(
-                    ResultCode.BAD_CREDENTIALS.getCode(), exception.getMessage(), data)));
+                    ErrorCode.UNAUTHORIZED.getCode(), exception.getMessage(), data)));
   }
 
   private String getClientIp(HttpServletRequest request) {

@@ -5,7 +5,7 @@ import java.io.IOException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.example.jwtjavaeight.common.Result;
-import org.example.jwtjavaeight.common.ResultCode;
+import org.example.jwtjavaeight.enums.ErrorCode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.access.AccessDeniedException;
@@ -37,7 +37,7 @@ public class SecurityExceptionHandler implements AuthenticationEntryPoint, Acces
         .write(
             JSONUtil.toJsonStr(
                 Result.failure(
-                    ResultCode.UNAUTHORIZED.getCode(), ResultCode.UNAUTHORIZED.getMessage())));
+                    ErrorCode.UNAUTHORIZED.getCode(), ErrorCode.UNAUTHORIZED.getMessage())));
   }
 
   @Override
@@ -52,6 +52,6 @@ public class SecurityExceptionHandler implements AuthenticationEntryPoint, Acces
         .getWriter()
         .write(
             JSONUtil.toJsonStr(
-                Result.failure(ResultCode.FORBIDDEN.getCode(), ResultCode.FORBIDDEN.getMessage())));
+                Result.failure(ErrorCode.FORBIDDEN.getCode(), ErrorCode.FORBIDDEN.getMessage())));
   }
 }
