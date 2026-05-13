@@ -1,6 +1,10 @@
 package org.example.jwtjavaeight.common;
 
+import org.example.jwtjavaeight.enums.ErrorCode;
+import org.slf4j.MDC;
+
 import java.io.Serializable;
+import java.time.OffsetDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,20 +21,62 @@ public class Result<T> implements Serializable {
   private Integer code;
   private String message;
   private T data;
+  private String traceId;
+  private OffsetDateTime timestamp;
 
   public static <T> Result<T> success(T data) {
-    return new Result<>(ResultCode.SUCCESS.getCode(), ResultCode.SUCCESS.getMessage(), data);
+    Result<T> result = new Result<>();
+    result.setCode(ResultCode.SUCCESS.getCode());
+    result.setMessage(ResultCode.SUCCESS.getMessage());
+    result.setData(data);
+    result.setTraceId(MDC.get("traceId"));
+    result.setTimestamp(OffsetDateTime.now());
+    return result;
   }
 
   public static <T> Result<T> success() {
-    return new Result<>(ResultCode.SUCCESS.getCode(), ResultCode.SUCCESS.getMessage(), null);
+    Result<T> result = new Result<>();
+    result.setCode(ResultCode.SUCCESS.getCode());
+    result.setMessage(ResultCode.SUCCESS.getMessage());
+    result.setTraceId(MDC.get("traceId"));
+    result.setTimestamp(OffsetDateTime.now());
+    return result;
   }
 
   public static <T> Result<T> failure(Integer code, String message) {
-    return new Result<>(code, message, null);
+    Result<T> result = new Result<>();
+    result.setCode(code);
+    result.setMessage(message);
+    result.setTraceId(MDC.get("traceId"));
+    result.setTimestamp(OffsetDateTime.now());
+    return result;
   }
 
   public static <T> Result<T> failure(Integer code, String message, T data) {
-    return new Result<>(code, message, data);
+    Result<T> result = new Result<>();
+    result.setCode(code);
+    result.setMessage(message);
+    result.setData(data);
+    result.setTraceId(MDC.get("traceId"));
+    result.setTimestamp(OffsetDateTime.now());
+    return result;
+  }
+
+  public static <T> Result<T> error(ErrorCode errorCode) {
+    Result<T> result = new Result<>();
+    result.setCode(errorCode.getCode());
+    result.setMessage(errorCode.getMessage());
+    result.setTraceId(MDC.get("traceId"));
+    result.setTimestamp(OffsetDateTime.now());
+    return result;
+  }
+
+  public static <T> Result<T> error(ErrorCode errorCode, String message) {
+    Result<T> result = new Result<>();
+    result.setCode(errorCode.getCode());
+    result.setMessage(message);
+    result.setTraceId(MDC.get("traceId"));
+    result.setTimestamp(OffsetDateTime.now());
+    return result;
   }
 }
