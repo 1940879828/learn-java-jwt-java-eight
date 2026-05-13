@@ -24,7 +24,7 @@ public class JwtLoginFilter extends UsernamePasswordAuthenticationFilter {
     setAuthenticationManager(authenticationManager);
     setAuthenticationSuccessHandler(successHandler);
     setAuthenticationFailureHandler(failureHandler);
-    setRequiresAuthenticationRequestMatcher(new AntPathRequestMatcher("/auth/login", "POST"));
+    setRequiresAuthenticationRequestMatcher(new AntPathRequestMatcher("/api/v1/auth/login", "POST"));
   }
 
   @Override
