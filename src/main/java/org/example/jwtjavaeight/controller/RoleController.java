@@ -104,7 +104,10 @@ public class RoleController {
         @ApiResponse(responseCode = "404", description = "角色不存在", content = @Content(schema = @Schema(implementation = Result.class))),
         @ApiResponse(responseCode = "409", description = "角色被引用，无法删除", content = @Content(schema = @Schema(implementation = Result.class)))
     })
-    @PreAuthorize("hasAuthority('role:delete')")
+    @PreAuthorize(
+        "(#force == false and hasAuthority('role:delete')) " +
+        "or (#force == true and hasAuthority('role:force-delete'))"
+    )
     public ResponseEntity<Result<Void>> deleteRole(
             @PathVariable Integer id,
             @Parameter(description = "是否强制删除") @RequestParam(defaultValue = "false") boolean force) {
