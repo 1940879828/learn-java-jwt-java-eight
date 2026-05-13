@@ -46,7 +46,7 @@ public class MenuController {
         @ApiResponse(responseCode = "200", description = "查询成功"),
         @ApiResponse(responseCode = "400", description = "参数校验失败", content = @Content(schema = @Schema(implementation = Result.class)))
     })
-    @PreAuthorize("hasAuthority('role:list')")
+    @PreAuthorize("hasAuthority('menu:list')")
     public ResponseEntity<Result<PageResponse<MenuResponse>>> listMenus(@Valid MenuQueryFilter filter) {
         PageResponse<MenuResponse> response = menuService.findByFilter(filter);
         return ResponseEntity.ok(Result.success(response));
@@ -57,7 +57,7 @@ public class MenuController {
     @ApiResponses({
         @ApiResponse(responseCode = "200", description = "查询成功")
     })
-    @PreAuthorize("hasAuthority('role:list')")
+    @PreAuthorize("hasAuthority('menu:list')")
     public ResponseEntity<Result<List<MenuTreeNode>>> getMenuTree() {
         List<MenuTreeNode> tree = menuService.getMenuTree();
         return ResponseEntity.ok(Result.success(tree));
@@ -69,7 +69,7 @@ public class MenuController {
         @ApiResponse(responseCode = "200", description = "查询成功"),
         @ApiResponse(responseCode = "404", description = "菜单不存在", content = @Content(schema = @Schema(implementation = Result.class)))
     })
-    @PreAuthorize("hasAuthority('role:list')")
+    @PreAuthorize("hasAuthority('menu:list')")
     public ResponseEntity<Result<MenuResponse>> getMenuById(@PathVariable Integer id) {
         MenuResponse response = menuService.findById(id);
         return ResponseEntity.ok(Result.success(response));
@@ -82,7 +82,7 @@ public class MenuController {
         @ApiResponse(responseCode = "400", description = "参数校验失败", content = @Content(schema = @Schema(implementation = Result.class))),
         @ApiResponse(responseCode = "409", description = "菜单编码已存在", content = @Content(schema = @Schema(implementation = Result.class)))
     })
-    @PreAuthorize("hasAuthority('role:add')")
+    @PreAuthorize("hasAuthority('menu:add')")
     public ResponseEntity<Result<Integer>> createMenu(@Valid @RequestBody MenuCreateRequest request) {
         Integer menuId = menuService.createMenu(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(Result.success(menuId));
@@ -95,7 +95,7 @@ public class MenuController {
         @ApiResponse(responseCode = "400", description = "参数校验失败", content = @Content(schema = @Schema(implementation = Result.class))),
         @ApiResponse(responseCode = "404", description = "菜单不存在", content = @Content(schema = @Schema(implementation = Result.class)))
     })
-    @PreAuthorize("hasAuthority('role:edit')")
+    @PreAuthorize("hasAuthority('menu:edit')")
     public ResponseEntity<Result<Void>> updateMenu(@PathVariable Integer id,
                                                     @Valid @RequestBody MenuUpdateRequest request) {
         menuService.updateMenu(id, request);
@@ -108,7 +108,7 @@ public class MenuController {
         @ApiResponse(responseCode = "204", description = "删除成功"),
         @ApiResponse(responseCode = "404", description = "菜单不存在", content = @Content(schema = @Schema(implementation = Result.class)))
     })
-    @PreAuthorize("hasAuthority('role:delete')")
+    @PreAuthorize("hasAuthority('menu:delete')")
     public ResponseEntity<Result<Void>> deleteMenu(@PathVariable Integer id) {
         menuService.deleteMenu(id);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).body(Result.success());
@@ -120,7 +120,7 @@ public class MenuController {
         @ApiResponse(responseCode = "200", description = "查询成功"),
         @ApiResponse(responseCode = "404", description = "菜单不存在", content = @Content(schema = @Schema(implementation = Result.class)))
     })
-    @PreAuthorize("hasAuthority('role:list')")
+    @PreAuthorize("hasAuthority('menu:list')")
     public ResponseEntity<Result<List<RoleResponse>>> getMenuRoles(@PathVariable Integer id) {
         List<RoleResponse> roles = menuService.findRolesByMenuId(id);
         return ResponseEntity.ok(Result.success(roles));
