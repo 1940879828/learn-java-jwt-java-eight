@@ -1,59 +1,64 @@
 package org.example.jwtjavaeight.exception;
 
 import org.example.jwtjavaeight.common.Result;
-import org.example.jwtjavaeight.common.ResultCode;
+import org.example.jwtjavaeight.enums.ErrorCode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.validation.BindException;
-import org.springframework.validation.FieldError;
+import org.slf4j.MDC;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-/** 全局异常处理器 */
+import javax.servlet.http.HttpServletRequest;
+import java.util.stream.Collectors;
+
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-  private static final Logger log = LoggerFactory.getLogger(GlobalExceptionHandler.class);
+    private static final Logger log = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 
-  /** 业务异常 */
-  @ExceptionHandler(BusinessException.class)
-  public Result<Void> handleBusinessException(BusinessException e) {
-    log.warn("[业务异常] {}", e.getMessage());
-    return Result.failure(e.getCode(), e.getMessage());
-  }
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<Result<Void>> handleValidation(MethodArgumentNotValidException ex) {
+        String message = ex.getBindingResult().getFieldErrors().stream()
+            .map(error -> error.getField() + ": " + error.getDefaultMessage())
+            .collect(Collectors.joining(", "));
+        return ResponseEntity.status(400)
+            .body(Result.error(ErrorCode.VALIDATION_FAILED, message));
+    }
 
-  /** 用户名或密码错误 */
-  @ExceptionHandler(BadCredentialsException.class)
-  public Result<Void> handleBadCredentialsException(BadCredentialsException e) {
-    log.warn("[认证失败] 用户名或密码错误");
-    return Result.failure(
-        ResultCode.BAD_CREDENTIALS.getCode(), ResultCode.BAD_CREDENTIALS.getMessage());
-  }
+    @ExceptionHandler(BusinessException.class)
+    public ResponseEntity<Result<Void>> handleBusiness(BusinessException ex) {
+        log.warn("Business exception: {}", ex.getMessage());
+        return ResponseEntity.status(ex.getHttpStatus())
+            .body(Result.error(ex.getErrorCode(), ex.getMessage()));
+    }
 
-  /** 参数校验异常 (RequestBody) */
-  @ExceptionHandler(MethodArgumentNotValidException.class)
-  public Result<Void> handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
-    FieldError fieldError = e.getBindingResult().getFieldError();
-    String message = fieldError != null ? fieldError.getDefaultMessage() : "参数校验失败";
-    log.warn("[参数校验失败] {}", message);
-    return Result.failure(400, message);
-  }
+    @ExceptionHandler(ResourceNotFoundException.class)
+    public ResponseEntity<Result<Void>> handleNotFound(ResourceNotFoundException ex) {
+        return ResponseEntity.status(404)
+            .body(Result.error(ex.getErrorCode(), ex.getMessage()));
+    }
 
-  /** 参数绑定异常 (Form) */
-  @ExceptionHandler(BindException.class)
-  public Result<Void> handleBindException(BindException e) {
-    FieldError fieldError = e.getBindingResult().getFieldError();
-    String message = fieldError != null ? fieldError.getDefaultMessage() : "参数绑定失败";
-    log.warn("[参数绑定失败] {}", message);
-    return Result.failure(400, message);
-  }
+    @ExceptionHandler(AuthenticationException.class)
+    public ResponseEntity<Result<Void>> handleAuth(AuthenticationException ex) {
+        return ResponseEntity.status(401)
+            .body(Result.error(ErrorCode.UNAUTHORIZED, "认证失败"));
+    }
 
-  /** 系统异常 */
-  @ExceptionHandler(Exception.class)
-  public Result<Void> handleException(Exception e) {
-    log.error("[系统异常] ", e);
-    return Result.failure(ResultCode.ERROR.getCode(), "系统异常，请联系管理员");
-  }
+    @ExceptionHandler(AccessDeniedException.class)
+    public ResponseEntity<Result<Void>> handleAccess(AccessDeniedException ex) {
+        return ResponseEntity.status(403)
+            .body(Result.error(ErrorCode.FORBIDDEN, "权限不足"));
+    }
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<Result<Void>> handleGeneric(Exception ex, HttpServletRequest request) {
+        String traceId = MDC.get("traceId");
+        log.error("Unexpected error [traceId={}]: ", traceId, ex);
+        return ResponseEntity.status(500)
+            .body(Result.error(ErrorCode.INTERNAL_ERROR, "系统异常，请联系管理员"));
+    }
 }
