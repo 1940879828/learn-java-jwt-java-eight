@@ -1,11 +1,18 @@
 package org.example.jwtjavaeight.domain.dto;
 
+import java.util.Set;
+
 public class MenuQueryFilter extends PageRequest {
     private String keyword;
     private Integer menuType;
     private Integer visible;
     private Integer status;
     private Long parentId;
+
+    @Override
+    protected Set<String> allowedSortColumns() {
+        return Set.of("id", "sort_order", "create_time");
+    }
 
     // Getters and Setters
     public String getKeyword() {

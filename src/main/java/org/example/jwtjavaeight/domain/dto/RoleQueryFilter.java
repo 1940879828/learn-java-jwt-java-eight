@@ -1,9 +1,16 @@
 package org.example.jwtjavaeight.domain.dto;
 
+import java.util.Set;
+
 public class RoleQueryFilter extends PageRequest {
     private String keyword;
     private Integer level;
     private String dataScope;
+
+    @Override
+    protected Set<String> allowedSortColumns() {
+        return Set.of("id", "role_code", "role_name", "level", "create_time");
+    }
 
     // Getters and Setters
     public String getKeyword() {

@@ -1,10 +1,17 @@
 package org.example.jwtjavaeight.domain.dto;
 
+import java.util.Set;
+
 public class UserQueryFilter extends PageRequest {
     private String keyword;
     private Integer status;
     private Boolean locked;
     private Long roleId;
+
+    @Override
+    protected Set<String> allowedSortColumns() {
+        return Set.of("id", "username", "create_time");
+    }
 
     // Getters and Setters
     public String getKeyword() {

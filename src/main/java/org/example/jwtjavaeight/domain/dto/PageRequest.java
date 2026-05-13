@@ -1,9 +1,10 @@
 package org.example.jwtjavaeight.domain.dto;
 
-import javax.validation.constraints.Min;
+import java.util.Set;
 import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 
-public class PageRequest {
+public abstract class PageRequest {
     @Min(1)
     private int page = 1;
 
@@ -14,11 +15,20 @@ public class PageRequest {
     private String sort = "id";
     private String order = "asc";
 
+    protected abstract Set<String> allowedSortColumns();
+
+    public String getSafeSort() {
+        return allowedSortColumns().contains(sort) ? sort : "id";
+    }
+
+    public String getSafeOrder() {
+        return "desc".equalsIgnoreCase(order) ? "desc" : "asc";
+    }
+
     public int getOffset() {
         return (page - 1) * size;
     }
 
-    // Getters and Setters
     public int getPage() {
         return page;
     }
