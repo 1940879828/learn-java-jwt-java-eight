@@ -69,22 +69,34 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDetailResponse findById(Long id) {
+        log.info("[UserService] 查询用户详情, userId: {}", id);
+
         SysUser user = userMapper.findById(id);
         if (user == null) {
+            log.warn("[UserService] 用户不存在, userId: {}", id);
             throw new ResourceNotFoundException("User", id);
         }
+
+        log.info("[UserService] 用户基本信息查询成功: {}", user.getUsername());
 
         UserDetailResponse response = new UserDetailResponse();
         BeanUtils.copyProperties(convertToResponse(user), response);
 
+        // 查询角色信息
         List<org.example.jwtjavaeight.domain.dto.RoleResponse> roles = findRolesByUserId(id);
         response.setRoles(roles);
+        log.info("[UserService] 用户拥有 {} 个角色", roles.size());
 
+        // 查询权限列表
         List<String> permissions = userMapper.findPermissionsByUserId(id);
         response.setPermissions(permissions);
+        log.info("[UserService] 用户拥有 {} 个权限", permissions.size());
 
+        // 查询菜单树
+        log.info("[UserService] 开始查询用户菜单树, userId: {}", id);
         List<MenuTreeNode> menuTree = menuService.getMenuTreeByUserId(id);
         response.setMenuTree(menuTree);
+        log.info("[UserService] 用户菜单树查询完成, 根节点数量: {}", menuTree.size());
 
         return response;
     }
@@ -307,7 +319,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDetailResponse getCurrentUser(Long userId) {
-        return findById(userId);
+        log.info("[UserService] 获取当前登录用户信息, userId: {}", userId);
+        UserDetailResponse response = findById(userId);
+        log.info("[UserService] 当前用户信息获取成功: {}", response.getUsername());
+        return response;
     }
 
     private UserResponse convertToResponse(SysUser user) {

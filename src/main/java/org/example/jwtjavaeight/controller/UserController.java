@@ -9,6 +9,7 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
 import javax.validation.Valid;
+import lombok.extern.slf4j.Slf4j;
 import org.example.jwtjavaeight.common.Result;
 import org.example.jwtjavaeight.domain.dto.AssignRolesRequest;
 import org.example.jwtjavaeight.domain.dto.ChangePasswordRequest;
@@ -35,6 +36,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+@Slf4j
 @Tag(name = "用户管理", description = "用户管理API")
 @RestController
 @RequestMapping("/api/v1/users")
@@ -212,7 +214,11 @@ public class UserController {
     })
     public ResponseEntity<Result<UserDetailResponse>> getCurrentUser(
             @AuthenticationPrincipal JwtUserDetails userDetails) {
+        log.info("[UserController] 获取当前用户信息, userId: {}, username: {}",
+            userDetails.getUserId(), userDetails.getUsername());
         UserDetailResponse response = userService.getCurrentUser(userDetails.getUserId());
+        log.info("[UserController] 当前用户信息获取成功, menuTree根节点数: {}",
+            response.getMenuTree() != null ? response.getMenuTree().size() : 0);
         return ResponseEntity.ok(Result.success(response));
     }
 

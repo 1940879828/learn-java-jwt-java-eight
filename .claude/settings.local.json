@@ -29,7 +29,8 @@
       "Bash(git commit -m 'feat: add Role DTOs \\(CreateRequest, UpdateRequest, Response\\) *)",
       "Bash(git commit -m 'feat: add User DTOs \\(CreateRequest, UpdateRequest, Response, DetailResponse, etc.\\) *)",
       "PowerShell(git add *)",
-      "Bash(git commit *)"
+      "Bash(git commit *)",
+      "Bash(mvn exec:java *1)"
     ]
   }
 }

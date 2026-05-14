@@ -8,6 +8,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
 import javax.validation.Valid;
+import lombok.extern.slf4j.Slf4j;
 import org.example.jwtjavaeight.common.Result;
 import org.example.jwtjavaeight.domain.dto.MenuCreateRequest;
 import org.example.jwtjavaeight.domain.dto.MenuQueryFilter;
@@ -29,6 +30,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+@Slf4j
 @Tag(name = "菜单管理", description = "菜单权限管理API")
 @RestController
 @RequestMapping("/api/v1/menus")
@@ -48,7 +50,9 @@ public class MenuController {
     })
     @PreAuthorize("hasAuthority('menu:list')")
     public ResponseEntity<Result<PageResponse<MenuResponse>>> listMenus(@Valid MenuQueryFilter filter) {
+        log.info("[MenuController] 分页查询菜单列表, filter: {}", filter);
         PageResponse<MenuResponse> response = menuService.findByFilter(filter);
+        log.info("[MenuController] 查询完成, 返回 {} 条记录", response.getItems().size());
         return ResponseEntity.ok(Result.success(response));
     }
 
@@ -59,7 +63,9 @@ public class MenuController {
     })
     @PreAuthorize("hasAuthority('menu:list')")
     public ResponseEntity<Result<List<MenuTreeNode>>> getMenuTree() {
+        log.info("[MenuController] 查询完整菜单树");
         List<MenuTreeNode> tree = menuService.getMenuTree();
+        log.info("[MenuController] 菜单树查询完成, 根节点数量: {}", tree.size());
         return ResponseEntity.ok(Result.success(tree));
     }
 
@@ -71,7 +77,9 @@ public class MenuController {
     })
     @PreAuthorize("hasAuthority('menu:list')")
     public ResponseEntity<Result<MenuResponse>> getMenuById(@PathVariable Integer id) {
+        log.info("[MenuController] 查询菜单详情, id: {}", id);
         MenuResponse response = menuService.findByIdDto(id);
+        log.info("[MenuController] 菜单详情查询成功: {}", response.getMenuName());
         return ResponseEntity.ok(Result.success(response));
     }
 
@@ -84,7 +92,10 @@ public class MenuController {
     })
     @PreAuthorize("hasAuthority('menu:add')")
     public ResponseEntity<Result<Integer>> createMenu(@Valid @RequestBody MenuCreateRequest request) {
+        log.info("[MenuController] 创建菜单, menuName: {}, menuCode: {}, menuType: {}",
+            request.getMenuName(), request.getMenuCode(), request.getMenuType());
         Integer menuId = menuService.createMenu(request);
+        log.info("[MenuController] 菜单创建成功, id: {}", menuId);
         return ResponseEntity.status(HttpStatus.CREATED).body(Result.success(menuId));
     }
 
@@ -98,7 +109,9 @@ public class MenuController {
     @PreAuthorize("hasAuthority('menu:edit')")
     public ResponseEntity<Result<Void>> updateMenu(@PathVariable Integer id,
                                                     @Valid @RequestBody MenuUpdateRequest request) {
+        log.info("[MenuController] 更新菜单, id: {}, menuName: {}", id, request.getMenuName());
         menuService.updateMenu(id, request);
+        log.info("[MenuController] 菜单更新成功, id: {}", id);
         return ResponseEntity.ok(Result.success());
     }
 
@@ -110,7 +123,9 @@ public class MenuController {
     })
     @PreAuthorize("hasAuthority('menu:delete')")
     public ResponseEntity<Result<Void>> deleteMenu(@PathVariable Integer id) {
+        log.info("[MenuController] 删除菜单, id: {}", id);
         menuService.deleteMenu(id);
+        log.info("[MenuController] 菜单删除成功, id: {}", id);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).body(Result.success());
     }
 

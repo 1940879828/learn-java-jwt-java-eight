@@ -65,17 +65,19 @@
 
     <update id="update" parameterType="org.example.jwtjavaeight.domain.entity.SysMenu">
         UPDATE sys_menu
-        SET menu_name = #{menuName},
-            menu_code = #{menuCode},
-            menu_type = #{menuType},
-            path = #{path},
-            component = #{component},
-            perms = #{perms},
-            icon = #{icon},
-            sort_order = #{sortOrder},
-            visible = #{visible},
-            status = #{status},
-            remark = #{remark}
+        <set>
+            <if test="menuName != null">menu_name = #{menuName},</if>
+            <if test="menuCode != null">menu_code = #{menuCode},</if>
+            <if test="menuType != null">menu_type = #{menuType},</if>
+            <if test="path != null">path = #{path},</if>
+            <if test="component != null">component = #{component},</if>
+            <if test="perms != null">perms = #{perms},</if>
+            <if test="icon != null">icon = #{icon},</if>
+            <if test="sortOrder != null">sort_order = #{sortOrder},</if>
+            <if test="visible != null">visible = #{visible},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="remark != null">remark = #{remark},</if>
+        </set>
         WHERE id = #{id}
     </update>
 

@@ -1,5 +1,7 @@
 package org.example.jwtjavaeight.service;
 
+import org.example.jwtjavaeight.domain.dto.MenuResponse;
+import org.example.jwtjavaeight.domain.dto.RoleResponse;
 import org.example.jwtjavaeight.domain.entity.SysMenu;
 import org.example.jwtjavaeight.domain.entity.SysRole;
 import org.junit.jupiter.api.Test;
@@ -29,9 +31,9 @@ public class RoleServiceTest {
 
     @Test
     public void testFindRoleById() {
-        SysRole role = roleService.findById(1);
+        RoleResponse role = roleService.findById(1);
         assertThat(role).isNotNull();
-        assertThat(role.getRoleCode()).isEqualTo("ROLE_ADMIN");
+        assertThat(role.getRoleCode()).isEqualTo("SUPER_ADMIN");
     }
 
     @Test
@@ -41,11 +43,11 @@ public class RoleServiceTest {
     }
 
     @Test
-    public void testAssignMenusToRole() {
+    public void testReplaceRoleMenus() {
         List<Integer> menuIds = Arrays.asList(1, 2, 3);
-        roleService.assignMenusToRole(1, menuIds);
+        roleService.replaceRoleMenus(1, menuIds);
 
-        List<SysMenu> menus = menuService.findMenusByRoleId(1);
+        List<MenuResponse> menus = roleService.findMenusByRoleId(1);
         assertThat(menus).hasSizeGreaterThanOrEqualTo(3);
     }
 }

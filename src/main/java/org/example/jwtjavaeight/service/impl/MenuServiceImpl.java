@@ -11,6 +11,8 @@ import org.example.jwtjavaeight.domain.entity.SysMenu;
 import org.example.jwtjavaeight.exception.ResourceNotFoundException;
 import org.example.jwtjavaeight.mapper.MenuMapper;
 import org.example.jwtjavaeight.service.MenuService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,27 +25,45 @@ import java.util.stream.Collectors;
 @Service
 public class MenuServiceImpl implements MenuService {
 
+    private static final Logger log = LoggerFactory.getLogger(MenuServiceImpl.class);
+
     @Autowired
     private MenuMapper menuMapper;
 
     @Override
     public List<SysMenu> findAll() {
-        return menuMapper.findAll();
+        log.info("[MenuService] 查询所有菜单");
+        List<SysMenu> menus = menuMapper.findAll();
+        log.info("[MenuService] 查询到 {} 条菜单记录", menus.size());
+        return menus;
     }
 
     @Override
     public SysMenu findById(Integer id) {
-        return menuMapper.findById(id);
+        log.info("[MenuService] 根据ID查询菜单, id: {}", id);
+        SysMenu menu = menuMapper.findById(id);
+        if (menu != null) {
+            log.info("[MenuService] 查询到菜单: {}", menu.getMenuName());
+        } else {
+            log.warn("[MenuService] 菜单不存在, id: {}", id);
+        }
+        return menu;
     }
 
     @Override
     public List<SysMenu> findMenusByRoleId(Integer roleId) {
-        return menuMapper.findMenusByRoleId(roleId);
+        log.info("[MenuService] 根据角色ID查询菜单, roleId: {}", roleId);
+        List<SysMenu> menus = menuMapper.findMenusByRoleId(roleId);
+        log.info("[MenuService] 角色拥有 {} 个菜单权限", menus.size());
+        return menus;
     }
 
     @Override
     public List<SysMenu> findMenusByUserId(Long userId) {
-        return menuMapper.findMenusByUserId(userId);
+        log.info("[MenuService] 根据用户ID查询菜单, userId: {}", userId);
+        List<SysMenu> menus = menuMapper.findMenusByUserId(userId);
+        log.info("[MenuService] 用户拥有 {} 个菜单权限", menus.size());
+        return menus;
     }
 
     @Override
@@ -68,8 +88,13 @@ public class MenuServiceImpl implements MenuService {
 
     @Override
     public PageResponse<MenuResponse> findByFilter(MenuQueryFilter filter) {
+        log.info("[MenuService] 分页查询菜单, page: {}, size: {}, keyword: {}",
+            filter.getPage(), filter.getSize(), filter.getKeyword());
+
         List<SysMenu> menus = menuMapper.findByFilter(filter);
         long total = menuMapper.countByFilter(filter);
+
+        log.info("[MenuService] 查询结果: 当前页 {} 条, 总计 {} 条", menus.size(), total);
 
         List<MenuResponse> responses = menus.stream()
                 .map(this::convertToResponse)
@@ -90,64 +115,138 @@ public class MenuServiceImpl implements MenuService {
     @Override
     @Transactional
     public Integer createMenu(MenuCreateRequest request) {
+        log.info("[MenuService] 创建菜单, menuName: {}, menuCode: {}, parentId: {}, menuType: {}",
+            request.getMenuName(), request.getMenuCode(), request.getParentId(), request.getMenuType());
+
+        // 构建菜单对象，并清理字符串字段
         SysMenu menu = new SysMenu();
         menu.setParentId(request.getParentId());
-        menu.setMenuName(request.getMenuName());
-        menu.setMenuCode(request.getMenuCode());
+
+        // Trim字符串字段
+        if (request.getMenuName() != null) {
+            menu.setMenuName(request.getMenuName().trim());
+        }
+        if (request.getMenuCode() != null) {
+            menu.setMenuCode(request.getMenuCode().trim());
+        }
+        if (request.getPath() != null) {
+            String trimmedPath = request.getPath().trim();
+            menu.setPath(trimmedPath.isEmpty() ? null : trimmedPath);
+        }
+        if (request.getComponent() != null) {
+            String trimmedComponent = request.getComponent().trim();
+            menu.setComponent(trimmedComponent.isEmpty() ? null : trimmedComponent);
+        }
+        if (request.getPerms() != null) {
+            String trimmedPerms = request.getPerms().trim();
+            menu.setPerms(trimmedPerms.isEmpty() ? null : trimmedPerms);
+        }
+        if (request.getIcon() != null) {
+            String trimmedIcon = request.getIcon().trim();
+            menu.setIcon(trimmedIcon.isEmpty() ? null : trimmedIcon);
+        }
+        if (request.getRemark() != null) {
+            String trimmedRemark = request.getRemark().trim();
+            menu.setRemark(trimmedRemark.isEmpty() ? null : trimmedRemark);
+        }
+
         menu.setMenuType(request.getMenuType() != null ? request.getMenuType().getCode() : null);
-        menu.setPath(request.getPath());
-        menu.setComponent(request.getComponent());
-        menu.setPerms(request.getPerms());
-        menu.setIcon(request.getIcon());
         menu.setSortOrder(request.getSortOrder());
         menu.setVisible(request.getVisible() != null && request.getVisible() ? 1 : 0);
         menu.setStatus(request.getStatus());
-        menu.setRemark(request.getRemark());
 
         menuMapper.insert(menu);
+        log.info("[MenuService] 菜单创建成功, id: {}", menu.getId());
         return menu.getId();
     }
 
     @Override
     @Transactional
     public void updateMenu(Integer id, MenuUpdateRequest request) {
+        log.info("[MenuService] 更新菜单, id: {}, menuName: {}", id, request.getMenuName());
+
         SysMenu menu = menuMapper.findById(id);
         if (menu == null) {
+            log.warn("[MenuService] 菜单不存在, 无法更新, id: {}", id);
             throw new ResourceNotFoundException("Menu", id);
         }
 
+        // 清理和构建更新对象
         SysMenu updateMenu = new SysMenu();
         updateMenu.setId(id);
-        updateMenu.setMenuName(request.getMenuName());
+
+        // Trim字符串字段，避免空白字符问题
+        if (request.getMenuName() != null) {
+            String trimmedName = request.getMenuName().trim();
+            updateMenu.setMenuName(trimmedName.isEmpty() ? null : trimmedName);
+        }
+        if (request.getPath() != null) {
+            String trimmedPath = request.getPath().trim();
+            updateMenu.setPath(trimmedPath.isEmpty() ? null : trimmedPath);
+        }
+        if (request.getComponent() != null) {
+            String trimmedComponent = request.getComponent().trim();
+            updateMenu.setComponent(trimmedComponent.isEmpty() ? null : trimmedComponent);
+        }
+        if (request.getPerms() != null) {
+            String trimmedPerms = request.getPerms().trim();
+            updateMenu.setPerms(trimmedPerms.isEmpty() ? null : trimmedPerms);
+        }
+        if (request.getIcon() != null) {
+            String trimmedIcon = request.getIcon().trim();
+            updateMenu.setIcon(trimmedIcon.isEmpty() ? null : trimmedIcon);
+        }
+        if (request.getRemark() != null) {
+            String trimmedRemark = request.getRemark().trim();
+            updateMenu.setRemark(trimmedRemark.isEmpty() ? null : trimmedRemark);
+        }
+
         updateMenu.setMenuType(request.getMenuType() != null ? request.getMenuType().getCode() : null);
-        updateMenu.setPath(request.getPath());
-        updateMenu.setComponent(request.getComponent());
-        updateMenu.setPerms(request.getPerms());
-        updateMenu.setIcon(request.getIcon());
         updateMenu.setSortOrder(request.getSortOrder());
         updateMenu.setVisible(request.getVisible() != null && request.getVisible() ? 1 : 0);
         updateMenu.setStatus(request.getStatus());
-        updateMenu.setRemark(request.getRemark());
 
         menuMapper.update(updateMenu);
+        log.info("[MenuService] 菜单更新成功, id: {}", id);
     }
 
     @Override
     @Transactional
     public void deleteMenu(Integer id) {
+        log.info("[MenuService] 删除菜单, id: {}", id);
         deleteById(id);
+        log.info("[MenuService] 菜单删除成功, id: {}", id);
     }
 
     @Override
     public List<MenuTreeNode> getMenuTree() {
+        log.info("[MenuService] 查询完整菜单树");
         List<SysMenu> allMenus = menuMapper.findAll();
-        return buildMenuTree(allMenus, null);
+        log.info("[MenuService] 查询到 {} 条菜单记录", allMenus.size());
+
+        List<MenuTreeNode> tree = buildMenuTree(allMenus, null);
+        log.info("[MenuService] 菜单树构建完成, 根节点数量: {}", tree.size());
+        return tree;
     }
 
     @Override
     public List<MenuTreeNode> getMenuTreeByUserId(Long userId) {
         List<SysMenu> menus = menuMapper.findMenusByUserId(userId);
-        return buildMenuTree(menus, null);
+        log.info("[MenuService] 查询用户菜单, userId={}, 查询到菜单数量={}", userId, menus.size());
+
+        if (!menus.isEmpty()) {
+            log.info("[MenuService] 菜单详情:");
+            for (SysMenu menu : menus) {
+                log.info("  - ID={}, Name={}, ParentId={}, Type={}, Status={}, Visible={}, Path={}",
+                    menu.getId(), menu.getMenuName(), menu.getParentId(),
+                    menu.getMenuType(), menu.getStatus(), menu.getVisible(), menu.getPath());
+            }
+        }
+
+        List<MenuTreeNode> tree = buildMenuTree(menus, null);
+        log.info("[MenuService] 构建菜单树完成, 根节点数量={}", tree.size());
+
+        return tree;
     }
 
     @Override
@@ -185,8 +284,16 @@ public class MenuServiceImpl implements MenuService {
         List<MenuTreeNode> tree = new ArrayList<>();
 
         for (SysMenu menu : menus) {
-            if ((parentId == null && menu.getParentId() == null) ||
-                (parentId != null && parentId.equals(menu.getParentId()))) {
+            // 根节点：parentId为null时，匹配parent_id=0或null的菜单
+            // 子节点：parentId不为null时，严格匹配parent_id
+            boolean isMatch = false;
+            if (parentId == null) {
+                isMatch = (menu.getParentId() == null || menu.getParentId() == 0);
+            } else {
+                isMatch = parentId.equals(menu.getParentId());
+            }
+
+            if (isMatch) {
                 MenuTreeNode node = new MenuTreeNode();
                 node.setId(menu.getId() != null ? menu.getId().longValue() : null);
                 node.setParentId(menu.getParentId());

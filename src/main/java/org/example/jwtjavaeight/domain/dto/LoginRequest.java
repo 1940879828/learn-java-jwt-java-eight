@@ -24,4 +24,8 @@ public class LoginRequest implements Serializable {
   @NotBlank(message = "密码不能为空")
   @Schema(description = "密码", example = "123456")
   private String password;
+
+  /** 记住我（7天免登录） */
+  @Schema(description = "记住我", example = "true")
+  private Boolean remember;
 }

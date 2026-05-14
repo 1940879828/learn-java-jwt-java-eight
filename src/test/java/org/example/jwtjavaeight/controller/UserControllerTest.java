@@ -29,7 +29,7 @@ public class UserControllerTest {
     @WithMockUser(username = "admin", authorities = {"ROLE_ADMIN", "user:edit"})
     public void testAssignRolesToUser() throws Exception {
         AssignRolesRequest request = new AssignRolesRequest();
-        request.setRoleIds(Arrays.asList(1, 2));
+        request.setRoleIds(Arrays.asList(1L, 2L));
 
         mockMvc.perform(post("/api/users/1/roles")
                 .contentType(MediaType.APPLICATION_JSON)
