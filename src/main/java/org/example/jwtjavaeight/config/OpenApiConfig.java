@@ -16,6 +16,7 @@ public class OpenApiConfig {
   public OpenAPI customOpenAPI() {
     final String securitySchemeName = "Bearer Token";
     return new OpenAPI()
+        .openapi("3.0.1")
         .info(
             new Info()
                 .title("JWT 双 Token 认证 API")

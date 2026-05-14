@@ -63,11 +63,15 @@ public class WebMvcConfiguration implements WebMvcConfigurer {
     }
 
     @Override
-    public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
-        // 使用自定义的ObjectMapper
-        MappingJackson2HttpMessageConverter converter = new MappingJackson2HttpMessageConverter();
-        converter.setObjectMapper(objectMapper());
-        converters.add(0, converter);
-        log.info("[WebMvc] 配置Jackson消息转换器");
+    public void extendMessageConverters(List<HttpMessageConverter<?>> converters) {
+        // 修改现有的Jackson转换器，而不是替换它
+        // 这样不会影响springdoc的OpenAPI文档生成
+        for (HttpMessageConverter<?> converter : converters) {
+            if (converter instanceof MappingJackson2HttpMessageConverter) {
+                MappingJackson2HttpMessageConverter jacksonConverter = (MappingJackson2HttpMessageConverter) converter;
+                jacksonConverter.setObjectMapper(objectMapper());
+                log.info("[WebMvc] 扩展Jackson消息转换器配置");
+            }
+        }
     }
 }
