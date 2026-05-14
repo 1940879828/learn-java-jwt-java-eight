@@ -38,7 +38,15 @@
       "PowerShell($encoded = \"eyJvcGVuYXBpIjoiMy4wLjEiLCJpbmZvIjp7InRpdGxlIjoiSldUIOWPjCBUb2tlbiDorqTor4EgQVBJIiwiZGVzY3JpcHRpb24iOiLln7rkuo4gU3ByaW5nIFNlY3VyaXR5ICsgSldUIOeahOWPjCBUb2tlbu+8iEFjY2VzcyArIFJlZnJlc2jvvInorqTor4HmjqXlj6PmlofmoaMiLCJjb250YWN0Ijp7Im5hbWUiOiJqd3QtamF2YS1laWdodCJ9LCJ2ZXJzaW9uIjoiMS4wLjAifSwic2VydmVycyI6W3sidXJsIjoiaHR0cDovL2xvY2FsaG9zdDo4MDgwIiwiZGVzY3JpcHRpb24iOiJHZW5lcmF0ZWQgc2VydmVyIHVybCJ9XSwic2VjdXJpdHkiOlt7IkJlYXJlciBUb2tlbiI6W119XSwidGFncyI6W3sibmFtZSI6IuW8gOWPkeW3peWFtyIsImRlc2NyaXB0aW9uIjo\"; $decoded = [System.Text.Encoding]::UTF8.GetString\\([System.Convert]::FromBase64String\\($encoded\\)\\); $json = $decoded | ConvertFrom-Json; Write-Output \"openapi: $\\($json.openapi\\)\"; Write-Output \"version: $\\($json.info.version\\)\")",
       "PowerShell($response = Invoke-WebRequest -Uri \"http://localhost:8080/v3/api-docs\" -UseBasicParsing; Write-Output \"Content-Type: $\\($response.Headers['Content-Type']\\)\"; Write-Output \"Content-Length: $\\($response.Content.Length\\)\"; Write-Output \"First char: $\\($response.Content[0]\\)\"; Write-Output \"Last char: $\\($response.Content[$response.Content.Length-1]\\)\"; Write-Output \"Starts with quote: $\\($response.Content.StartsWith\\('`\"'\\)\\)\")",
       "Skill(superpowers:systematic-debugging)",
-      "Bash(curl *)"
+      "Bash(curl *)",
+      "WebSearch",
+      "WebFetch(domain:springdoc.org)",
+      "Bash(git checkout-index *)",
+      "PowerShell(Test-Path *)",
+      "PowerShell(Get-ChildItem *)",
+      "WebFetch(domain:raw.githubusercontent.com)",
+      "Bash(gh api *)",
+      "WebFetch(domain:api.github.com)"
     ]
   }
 }

@@ -29,3 +29,6 @@ Java 8 Spring Boot 2.7.6 project for JWT-based authentication/authorization with
 ## Package
 
 All code lives under `org.example.jwtjavaeight`. Main class: `JwtJavaEightApplication`.
+
+## notion
+修改完不要进行编译和运行操作，让用户自己编译检查。
