@@ -62,16 +62,7 @@ public class Result<T> implements Serializable {
     return result;
   }
 
-  public static <T> Result<T> error(ErrorCode errorCode) {
-    Result<T> result = new Result<>();
-    result.setCode(errorCode.getCode());
-    result.setMessage(errorCode.getMessage());
-    result.setTraceId(MDC.get("traceId"));
-    result.setTimestamp(OffsetDateTime.now());
-    return result;
-  }
-
-  public static <T> Result<T> error(ErrorCode errorCode, String message) {
+    public static <T> Result<T> error(ErrorCode errorCode, String message) {
     Result<T> result = new Result<>();
     result.setCode(errorCode.getCode());
     result.setMessage(message);

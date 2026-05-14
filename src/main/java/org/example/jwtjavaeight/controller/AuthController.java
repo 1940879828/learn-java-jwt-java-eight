@@ -9,7 +9,6 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import javax.validation.Valid;
 import org.example.jwtjavaeight.common.Result;
-import org.example.jwtjavaeight.domain.dto.LoginRequest;
 import org.example.jwtjavaeight.domain.dto.LoginResponse;
 import org.example.jwtjavaeight.domain.dto.RefreshRequest;
 import org.example.jwtjavaeight.domain.dto.RegisterRequest;

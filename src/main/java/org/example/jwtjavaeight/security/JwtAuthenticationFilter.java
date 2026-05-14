@@ -17,6 +17,7 @@ import org.example.jwtjavaeight.constants.SecurityConstants;
 import org.example.jwtjavaeight.utils.JwtUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.lang.NonNull;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -39,7 +40,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
   @Override
   protected void doFilterInternal(
-      HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
+          HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull FilterChain filterChain)
       throws ServletException, IOException {
     String header = request.getHeader(jwtConfig.getHeader());
 
@@ -51,7 +52,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     String token = header.substring(jwtConfig.getTokenPrefix().length());
 
     try {
-      if (!jwtUtil.validateToken(token)) {
+      if (jwtUtil.validateToken(token)) {
         log.warn("[JWT Filter] Token验证失败");
         writeUnauthorized(response);
         return;

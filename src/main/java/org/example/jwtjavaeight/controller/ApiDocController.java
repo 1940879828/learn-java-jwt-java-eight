@@ -37,7 +37,7 @@ public class ApiDocController {
     return objectMapper.readTree(json);
   }
 
-  /** 导出所有 Schemas 定义 访问: http://localhost:8080/api/doc/schemas */
+  /** 导出所有 Schemas 定义 访问: <a href="http://localhost:8080/api/doc/schemas">...</a> */
   @GetMapping(value = "/schemas", produces = MediaType.APPLICATION_JSON_VALUE)
   @PreAuthorize("hasAuthority('system:dev-tools')")
   public Map<String, Object> getSchemas() {
@@ -69,7 +69,7 @@ public class ApiDocController {
     }
   }
 
-  /** 导出完整的 OpenAPI 文档 访问: http://localhost:8080/api/doc/full */
+  /** 导出完整的 OpenAPI 文档 访问: <a href="http://localhost:8080/api/doc/full">...</a> */
   @GetMapping(value = "/full", produces = MediaType.APPLICATION_JSON_VALUE)
   @PreAuthorize("hasAuthority('system:dev-tools')")
   public JsonNode getFullApiDoc() {
@@ -83,7 +83,7 @@ public class ApiDocController {
     }
   }
 
-  /** 导出精简的 Schemas（仅包含字段定义，更适合 AI 阅读） 访问: http://localhost:8080/api/doc/schemas-simple */
+  /** 导出精简的 Schemas（仅包含字段定义，更适合 AI 阅读） 访问: <a href="http://localhost:8080/api/doc/schemas-simple">...</a> */
   @GetMapping(value = "/schemas-simple", produces = MediaType.TEXT_PLAIN_VALUE)
   @PreAuthorize("hasAuthority('system:dev-tools')")
   public String getSchemasSimple() {
@@ -155,7 +155,7 @@ public class ApiDocController {
                 }
 
                 JsonNode required = schema.path("required");
-                if (!required.isMissingNode() && required.isArray() && required.size() > 0) {
+                if (!required.isMissingNode() && required.isArray() && !required.isEmpty()) {
                   sb.append("必填字段: ");
                   for (int i = 0; i < required.size(); i++) {
                     if (i > 0) sb.append(", ");

@@ -97,9 +97,9 @@ public class JwtUtil {
   public boolean validateToken(String token) {
     try {
       parseToken(token);
-      return true;
-    } catch (Exception e) {
       return false;
+    } catch (Exception e) {
+      return true;
     }
   }
 
@@ -107,7 +107,4 @@ public class JwtUtil {
     return parseToken(token).getId();
   }
 
-  public Long getUserIdFromToken(String token) {
-    return parseToken(token).get(SecurityConstants.CLAIM_USER_ID, Long.class);
-  }
 }

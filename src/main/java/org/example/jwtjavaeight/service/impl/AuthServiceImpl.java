@@ -81,7 +81,7 @@ public class AuthServiceImpl implements AuthService {
   public LoginResponse refresh(RefreshRequest refreshRequest) {
     String refreshTokenValue = refreshRequest.getRefreshToken();
 
-    if (!jwtUtil.validateToken(refreshTokenValue)) {
+    if (jwtUtil.validateToken(refreshTokenValue)) {
       throw new TokenExpiredException("Refresh Token无效或已过期");
     }
 

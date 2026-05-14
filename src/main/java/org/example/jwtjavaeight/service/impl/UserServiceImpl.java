@@ -1,6 +1,5 @@
 package org.example.jwtjavaeight.service.impl;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -213,7 +212,9 @@ public class UserServiceImpl implements UserService {
             userRoleMapper.batchInsert(userRoles);
         }
 
-        log.info("[UserService] 替换用户角色成功, 用户ID: {}, 角色数: {}", userId, roleIds.size());
+        if (roleIds != null) {
+            log.info("[UserService] 替换用户角色成功, 用户ID: {}, 角色数: {}", userId, roleIds.size());
+        }
     }
 
     @Override

@@ -77,8 +77,8 @@ public class SecurityConfig {
         .sessionManagement(
             session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
         .authorizeRequests(
-            authz ->
-                authz
+                auth ->
+                auth
                     // 认证接口白名单
                     .antMatchers("/api/v1/auth/**")
                     .permitAll()

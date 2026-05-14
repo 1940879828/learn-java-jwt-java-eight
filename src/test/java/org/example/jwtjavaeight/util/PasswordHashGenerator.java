@@ -16,7 +16,7 @@ public class PasswordHashGenerator {
 
         System.out.println("===========================================");
         System.out.println("原始密码: " + password);
-        System.out.println("BCrypt 哈希值:");
+        System.out.println("Bcrypt 哈希值:");
         System.out.println(hash);
         System.out.println("===========================================");
         System.out.println();

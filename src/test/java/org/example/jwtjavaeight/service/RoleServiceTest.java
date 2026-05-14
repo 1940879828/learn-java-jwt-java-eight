@@ -2,7 +2,6 @@ package org.example.jwtjavaeight.service;
 
 import org.example.jwtjavaeight.domain.dto.MenuResponse;
 import org.example.jwtjavaeight.domain.dto.RoleResponse;
-import org.example.jwtjavaeight.domain.entity.SysMenu;
 import org.example.jwtjavaeight.domain.entity.SysRole;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,9 +17,6 @@ public class RoleServiceTest {
 
     @Autowired
     private RoleService roleService;
-
-    @Autowired
-    private MenuService menuService;
 
     @Test
     public void testFindAllRoles() {

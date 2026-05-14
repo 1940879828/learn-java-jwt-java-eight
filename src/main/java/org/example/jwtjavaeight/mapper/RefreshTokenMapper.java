@@ -7,11 +7,11 @@ import org.example.jwtjavaeight.domain.entity.SysRefreshToken;
 @Mapper
 public interface RefreshTokenMapper {
 
-  int insert(SysRefreshToken refreshToken);
+  void insert(SysRefreshToken refreshToken);
 
   SysRefreshToken findByTokenHash(@Param("tokenHash") String tokenHash);
 
-  int deleteByUserId(@Param("userId") Long userId);
+  void deleteByUserId(@Param("userId") Long userId);
 
-  int deleteByJtiId(@Param("jtiId") String jtiId);
+  void deleteByJtiId(@Param("jtiId") String jtiId);
 }

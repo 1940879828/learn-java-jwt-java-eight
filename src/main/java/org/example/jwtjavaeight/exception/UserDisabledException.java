@@ -9,7 +9,4 @@ public class UserDisabledException extends BusinessException {
     super(ErrorCode.FORBIDDEN, "用户已被禁用");
   }
 
-  public UserDisabledException(String message) {
-    super(ErrorCode.FORBIDDEN, message);
-  }
 }

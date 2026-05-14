@@ -2,7 +2,6 @@ package org.example.jwtjavaeight.integration;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.example.jwtjavaeight.domain.dto.LoginRequest;
-import org.example.jwtjavaeight.domain.dto.LoginResponse;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -78,7 +77,7 @@ public class RbacIntegrationTest {
     }
 
     @Test
-    public void testAccessDeniedWithoutPermission() throws Exception {
+    public void testAccessDeniedWithoutPermission() {
         // 登录一个只有基础权限的用户（假设user2只有查询权限，没有删除权限）
         // 这里需要先创建一个测试用户，或者使用现有的普通用户
 

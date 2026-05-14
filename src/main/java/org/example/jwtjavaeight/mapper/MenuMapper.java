@@ -32,17 +32,17 @@ public interface MenuMapper {
     /**
      * 插入菜单
      */
-    int insert(SysMenu menu);
+    void insert(SysMenu menu);
 
     /**
      * 更新菜单
      */
-    int update(SysMenu menu);
+    void update(SysMenu menu);
 
     /**
      * 删除菜单
      */
-    int deleteById(@Param("id") Integer id);
+    void deleteById(@Param("id") Integer id);
 
     /**
      * 根据过滤条件分页查询菜单

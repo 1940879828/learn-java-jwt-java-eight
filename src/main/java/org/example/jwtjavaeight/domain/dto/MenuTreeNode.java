@@ -1,16 +1,14 @@
 package org.example.jwtjavaeight.domain.dto;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import java.util.List;
 
+@Setter
+@Getter
 public class MenuTreeNode extends MenuResponse {
+    // Getters and Setters
     private List<MenuTreeNode> children;
 
-    // Getters and Setters
-    public List<MenuTreeNode> getChildren() {
-        return children;
-    }
-
-    public void setChildren(List<MenuTreeNode> children) {
-        this.children = children;
-    }
 }

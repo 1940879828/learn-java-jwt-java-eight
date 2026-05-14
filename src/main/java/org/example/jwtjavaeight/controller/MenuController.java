@@ -137,7 +137,9 @@ public class MenuController {
     })
     @PreAuthorize("hasAuthority('menu:list')")
     public ResponseEntity<Result<List<RoleResponse>>> getMenuRoles(@PathVariable Integer id) {
+        log.info("[MenuController] 查询菜单的角色列表, menuId: {}", id);
         List<RoleResponse> roles = menuService.findRolesByMenuId(id);
+        log.info("[MenuController] 查询到 {} 个角色", roles.size());
         return ResponseEntity.ok(Result.success(roles));
     }
 }

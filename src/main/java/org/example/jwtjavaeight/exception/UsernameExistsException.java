@@ -9,7 +9,4 @@ public class UsernameExistsException extends BusinessException {
     super(ErrorCode.DUPLICATE_RESOURCE, "用户名已存在");
   }
 
-  public UsernameExistsException(String message) {
-    super(ErrorCode.DUPLICATE_RESOURCE, message);
-  }
 }

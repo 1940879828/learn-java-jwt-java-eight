@@ -2,8 +2,6 @@ package org.example.jwtjavaeight.domain.entity;
 
 import org.junit.jupiter.api.Test;
 
-import java.util.Date;
-
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class EntityTest {

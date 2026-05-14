@@ -66,13 +66,11 @@ public class LoginFailureHandler implements AuthenticationFailureHandler {
               userMapper.unlockUser(user.getId());
               // 重新计算剩余尝试次数（解锁后应该重置为最大值）
               remainingAttempts = SecurityConstants.MAX_LOGIN_ATTEMPTS;
-              lockRemainingSeconds = null;
             }
           } else {
             // 账户未锁定，计算剩余尝试次数
             int failed = user.getFailedAttempts() != null ? user.getFailedAttempts() : 0;
             remainingAttempts = Math.max(0, SecurityConstants.MAX_LOGIN_ATTEMPTS - failed);
-            lockRemainingSeconds = null;
           }
         }
       } catch (Exception e) {

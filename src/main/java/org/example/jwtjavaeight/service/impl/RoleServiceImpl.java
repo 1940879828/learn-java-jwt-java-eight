@@ -12,7 +12,6 @@ import org.example.jwtjavaeight.domain.dto.UserResponse;
 import org.example.jwtjavaeight.domain.entity.SysMenu;
 import org.example.jwtjavaeight.domain.entity.SysRole;
 import org.example.jwtjavaeight.domain.entity.SysRoleMenu;
-import org.example.jwtjavaeight.domain.entity.SysUser;
 import org.example.jwtjavaeight.enums.DataScopeEnum;
 import org.example.jwtjavaeight.enums.ErrorCode;
 import org.example.jwtjavaeight.exception.BusinessException;
@@ -20,11 +19,9 @@ import org.example.jwtjavaeight.exception.ResourceNotFoundException;
 import org.example.jwtjavaeight.mapper.MenuMapper;
 import org.example.jwtjavaeight.mapper.RoleMapper;
 import org.example.jwtjavaeight.mapper.RoleMenuMapper;
-import org.example.jwtjavaeight.mapper.UserMapper;
 import org.example.jwtjavaeight.service.RoleService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -36,17 +33,14 @@ public class RoleServiceImpl implements RoleService {
     private final RoleMapper roleMapper;
     private final RoleMenuMapper roleMenuMapper;
     private final MenuMapper menuMapper;
-    private final UserMapper userMapper;
 
     public RoleServiceImpl(
             RoleMapper roleMapper,
             RoleMenuMapper roleMenuMapper,
-            MenuMapper menuMapper,
-            UserMapper userMapper) {
+            MenuMapper menuMapper) {
         this.roleMapper = roleMapper;
         this.roleMenuMapper = roleMenuMapper;
         this.menuMapper = menuMapper;
-        this.userMapper = userMapper;
     }
 
     @Override
@@ -193,7 +187,9 @@ public class RoleServiceImpl implements RoleService {
             roleMenuMapper.batchInsert(roleMenus);
         }
 
-        log.info("[RoleService] 替换角色菜单成功, 角色ID: {}, 菜单数: {}", roleId, menuIds.size());
+        if (menuIds != null) {
+            log.info("[RoleService] 替换角色菜单成功, 角色ID: {}, 菜单数: {}", roleId, menuIds.size());
+        }
     }
 
     @Override

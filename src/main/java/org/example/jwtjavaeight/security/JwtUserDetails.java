@@ -2,6 +2,8 @@ package org.example.jwtjavaeight.security;
 
 import java.util.Collection;
 import java.util.Collections;
+
+import lombok.Getter;
 import org.example.jwtjavaeight.domain.entity.SysUser;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -11,6 +13,7 @@ public class JwtUserDetails implements UserDetails {
 
   private static final long serialVersionUID = 1L;
 
+  @Getter
   private final Long userId;
   private final String username;
   private final String password;
@@ -33,11 +36,7 @@ public class JwtUserDetails implements UserDetails {
     this.authorities = authorities;
   }
 
-  public Long getUserId() {
-    return userId;
-  }
-
-  @Override
+    @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {
     return authorities;
   }

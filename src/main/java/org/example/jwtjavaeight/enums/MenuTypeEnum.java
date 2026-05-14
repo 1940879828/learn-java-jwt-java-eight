@@ -1,7 +1,9 @@
 package org.example.jwtjavaeight.enums;
 
 import com.fasterxml.jackson.annotation.JsonValue;
+import lombok.Getter;
 
+@Getter
 public enum MenuTypeEnum {
     DIR(1, "目录"),
     MENU(2, "菜单"),
@@ -13,14 +15,6 @@ public enum MenuTypeEnum {
     MenuTypeEnum(Integer code, String description) {
         this.code = code;
         this.description = description;
-    }
-
-    public Integer getCode() {
-        return code;
-    }
-
-    public String getDescription() {
-        return description;
     }
 
     @JsonValue

@@ -17,16 +17,16 @@ public interface UserMapper {
 
   SysUser findById(@Param("id") Long id);
 
-  int insert(SysUser user);
+  void insert(SysUser user);
 
-  int incrementFailedAttempts(
+  void incrementFailedAttempts(
       @Param("username") String username,
       @Param("maxAttempts") int maxAttempts,
       @Param("lockDurationSeconds") long lockDurationSeconds);
 
-  int resetFailedAttempts(@Param("id") Long id);
+  void resetFailedAttempts(@Param("id") Long id);
 
-  int unlockUser(@Param("id") Long id);
+  void unlockUser(@Param("id") Long id);
 
   /**
    * 根据用户ID查询权限列表
@@ -46,20 +46,20 @@ public interface UserMapper {
   /**
    * 更新用户信息
    */
-  int updateById(SysUser user);
+  void updateById(SysUser user);
 
   /**
    * 删除用户（软删除，设置status=0）
    */
-  int deleteById(@Param("id") Long id);
+  void deleteById(@Param("id") Long id);
 
   /**
    * 锁定用户
    */
-  int lockUser(@Param("id") Long id);
+  void lockUser(@Param("id") Long id);
 
   /**
    * 更新用户密码
    */
-  int updatePassword(@Param("id") Long id, @Param("password") String password);
+  void updatePassword(@Param("id") Long id, @Param("password") String password);
 }

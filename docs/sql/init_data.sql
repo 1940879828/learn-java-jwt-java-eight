@@ -16,7 +16,7 @@ USE jwt_java_eight;
 CREATE TABLE IF NOT EXISTS `sys_user` (
     `id`              BIGINT(20)   NOT NULL AUTO_INCREMENT COMMENT '主键',
     `username`        VARCHAR(64)  NOT NULL COMMENT '用户名',
-    `password`        VARCHAR(128) NOT NULL COMMENT '密码(BCrypt)',
+    `password`        VARCHAR(128) NOT NULL COMMENT '密码(Bcrypt)',
     `email`           VARCHAR(255) DEFAULT NULL COMMENT '邮箱',
     `phone`           VARCHAR(20)  DEFAULT NULL COMMENT '手机号',
     `status`          TINYINT(4)   NOT NULL DEFAULT 1 COMMENT '状态: 1-正常 0-禁用',

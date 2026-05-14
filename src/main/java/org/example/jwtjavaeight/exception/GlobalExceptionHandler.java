@@ -13,13 +13,10 @@ import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.validation.BindException;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import java.util.stream.Collectors;
 
@@ -132,19 +129,19 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(AuthenticationException.class)
-    public ResponseEntity<Result<Void>> handleAuth(AuthenticationException ex) {
+    public ResponseEntity<Result<Void>> handleAuth() {
         return ResponseEntity.status(401)
             .body(Result.error(ErrorCode.UNAUTHORIZED, "认证失败"));
     }
 
     @ExceptionHandler(AccessDeniedException.class)
-    public ResponseEntity<Result<Void>> handleAccess(AccessDeniedException ex) {
+    public ResponseEntity<Result<Void>> handleAccess() {
         return ResponseEntity.status(403)
             .body(Result.error(ErrorCode.FORBIDDEN, "权限不足"));
     }
 
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<Result<Void>> handleGeneric(Exception ex, HttpServletRequest request) {
+    public ResponseEntity<Result<Void>> handleGeneric(Exception ex) {
         String traceId = MDC.get("traceId");
         log.error("Unexpected error [traceId={}]: ", traceId, ex);
         return ResponseEntity.status(500)

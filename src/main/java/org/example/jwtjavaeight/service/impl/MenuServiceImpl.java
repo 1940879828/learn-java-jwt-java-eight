@@ -9,16 +9,16 @@ import org.example.jwtjavaeight.domain.dto.PageResponse;
 import org.example.jwtjavaeight.domain.dto.RoleResponse;
 import org.example.jwtjavaeight.domain.entity.SysMenu;
 import org.example.jwtjavaeight.exception.ResourceNotFoundException;
+import org.example.jwtjavaeight.domain.entity.SysRole;
 import org.example.jwtjavaeight.mapper.MenuMapper;
+import org.example.jwtjavaeight.mapper.RoleMapper;
 import org.example.jwtjavaeight.service.MenuService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -27,60 +27,14 @@ public class MenuServiceImpl implements MenuService {
 
     private static final Logger log = LoggerFactory.getLogger(MenuServiceImpl.class);
 
-    @Autowired
-    private MenuMapper menuMapper;
+    private final MenuMapper menuMapper;
+    private final RoleMapper roleMapper;
 
-    @Override
-    public List<SysMenu> findAll() {
-        log.info("[MenuService] 查询所有菜单");
-        List<SysMenu> menus = menuMapper.findAll();
-        log.info("[MenuService] 查询到 {} 条菜单记录", menus.size());
-        return menus;
+    public MenuServiceImpl(MenuMapper menuMapper, RoleMapper roleMapper) {
+        this.menuMapper = menuMapper;
+        this.roleMapper = roleMapper;
     }
 
-    @Override
-    public SysMenu findById(Integer id) {
-        log.info("[MenuService] 根据ID查询菜单, id: {}", id);
-        SysMenu menu = menuMapper.findById(id);
-        if (menu != null) {
-            log.info("[MenuService] 查询到菜单: {}", menu.getMenuName());
-        } else {
-            log.warn("[MenuService] 菜单不存在, id: {}", id);
-        }
-        return menu;
-    }
-
-    @Override
-    public List<SysMenu> findMenusByRoleId(Integer roleId) {
-        log.info("[MenuService] 根据角色ID查询菜单, roleId: {}", roleId);
-        List<SysMenu> menus = menuMapper.findMenusByRoleId(roleId);
-        log.info("[MenuService] 角色拥有 {} 个菜单权限", menus.size());
-        return menus;
-    }
-
-    @Override
-    public List<SysMenu> findMenusByUserId(Long userId) {
-        log.info("[MenuService] 根据用户ID查询菜单, userId: {}", userId);
-        List<SysMenu> menus = menuMapper.findMenusByUserId(userId);
-        log.info("[MenuService] 用户拥有 {} 个菜单权限", menus.size());
-        return menus;
-    }
-
-    @Override
-    @Transactional
-    public SysMenu create(SysMenu menu) {
-        menuMapper.insert(menu);
-        return menu;
-    }
-
-    @Override
-    @Transactional
-    public SysMenu update(SysMenu menu) {
-        menuMapper.update(menu);
-        return menuMapper.findById(menu.getId());
-    }
-
-    @Override
     @Transactional
     public void deleteById(Integer id) {
         menuMapper.deleteById(id);
@@ -251,8 +205,48 @@ public class MenuServiceImpl implements MenuService {
 
     @Override
     public List<RoleResponse> findRolesByMenuId(Integer menuId) {
-        // Stub implementation - returns empty list
-        return Collections.emptyList();
+        log.info("[MenuService] 查询拥有菜单的角色列表, menuId: {}", menuId);
+
+        // 验证菜单是否存在
+        SysMenu menu = menuMapper.findById(menuId);
+        if (menu == null) {
+            throw new ResourceNotFoundException("Menu", menuId);
+        }
+
+        // 查询拥有该菜单的角色
+        List<SysRole> roles = roleMapper.findRolesByMenuId(menuId);
+        log.info("[MenuService] 查询到 {} 个角色拥有该菜单", roles.size());
+
+        return roles.stream()
+                .map(this::convertToRoleResponse)
+                .collect(Collectors.toList());
+    }
+
+    private RoleResponse convertToRoleResponse(SysRole role) {
+        RoleResponse response = new RoleResponse();
+        response.setId(role.getId() != null ? role.getId().longValue() : null);
+        response.setRoleCode(role.getRoleCode());
+        response.setRoleName(role.getRoleName());
+        response.setPermission(role.getPermission());
+        response.setLevel(role.getLevel());
+
+        // Convert String to DataScopeEnum
+        if (role.getDataScope() != null) {
+            try {
+                response.setDataScope(org.example.jwtjavaeight.enums.DataScopeEnum.valueOf(role.getDataScope()));
+            } catch (IllegalArgumentException e) {
+                log.warn("[MenuService] 无效的数据权限范围: {}", role.getDataScope());
+                response.setDataScope(null);
+            }
+        }
+
+        response.setCreateBy(role.getCreateBy());
+        if (role.getCreateTime() != null) {
+            response.setCreateTime(role.getCreateTime().toInstant()
+                    .atOffset(java.time.ZoneOffset.UTC));
+        }
+        response.setRemark(role.getRemark());
+        return response;
     }
 
     private MenuResponse convertToResponse(SysMenu menu) {
@@ -286,7 +280,7 @@ public class MenuServiceImpl implements MenuService {
         for (SysMenu menu : menus) {
             // 根节点：parentId为null时，匹配parent_id=0或null的菜单
             // 子节点：parentId不为null时，严格匹配parent_id
-            boolean isMatch = false;
+            boolean isMatch;
             if (parentId == null) {
                 isMatch = (menu.getParentId() == null || menu.getParentId() == 0);
             } else {

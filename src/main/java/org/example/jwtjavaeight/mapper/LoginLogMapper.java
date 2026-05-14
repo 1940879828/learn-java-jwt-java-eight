@@ -6,5 +6,5 @@ import org.example.jwtjavaeight.domain.entity.SysLoginLog;
 @Mapper
 public interface LoginLogMapper {
 
-  int insert(SysLoginLog log);
+  void insert(SysLoginLog log);
 }

@@ -11,17 +11,12 @@ public interface RoleMenuMapper {
     /**
      * 批量插入角色菜单关联
      */
-    int batchInsert(@Param("list") List<SysRoleMenu> list);
+    void batchInsert(@Param("list") List<SysRoleMenu> list);
 
     /**
      * 删除角色的所有菜单
      */
-    int deleteByRoleId(@Param("roleId") Integer roleId);
-
-    /**
-     * 查询角色的菜单关联
-     */
-    List<SysRoleMenu> findByRoleId(@Param("roleId") Integer roleId);
+    void deleteByRoleId(@Param("roleId") Integer roleId);
 
     /**
      * 删除角色的指定菜单

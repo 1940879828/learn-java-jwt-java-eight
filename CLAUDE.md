@@ -4,7 +4,12 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project
 
-Java 8 Spring Boot 2.7.6 project intended for JWT-based authentication/authorization. Currently a bare scaffold — no application logic, controllers, services, or JWT implementation exists yet.
+Java 8 Spring Boot 2.7.6 project for JWT-based authentication/authorization with RBAC (Role-Based Access Control). This is an educational/learning project.
+
+## Important Notes
+
+- **Do not compile by default**: Do not run `mvn compile` or `mvn clean package` unless explicitly requested by the user
+- **Educational project**: Plaintext passwords, JWT secrets, and permissive CORS configuration are intentional for learning purposes
 
 ## Build & Run
 

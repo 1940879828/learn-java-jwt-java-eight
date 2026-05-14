@@ -1,19 +1,17 @@
 package org.example.jwtjavaeight.domain.dto;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
+@Setter
+@Getter
 public class ResetPasswordRequest {
+    // Getters and Setters
     @NotBlank
     @Size(min = 6, max = 64)
     private String newPassword;
 
-    // Getters and Setters
-    public String getNewPassword() {
-        return newPassword;
-    }
-
-    public void setNewPassword(String newPassword) {
-        this.newPassword = newPassword;
-    }
 }

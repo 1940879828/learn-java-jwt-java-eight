@@ -31,17 +31,17 @@ public interface RoleMapper {
     /**
      * 插入角色
      */
-    int insert(SysRole role);
+    void insert(SysRole role);
 
     /**
      * 更新角色
      */
-    int update(SysRole role);
+    void update(SysRole role);
 
     /**
      * 删除角色
      */
-    int deleteById(@Param("id") Integer id);
+    void deleteById(@Param("id") Integer id);
 
     /**
      * 分页查询角色列表
@@ -59,7 +59,8 @@ public interface RoleMapper {
     int countUsersByRoleId(@Param("roleId") Integer roleId);
 
     /**
-     * 根据菜单ID查询拥有该菜单的角色列表
+     * 根据菜单ID查询拥有该菜单权限的角色列表
      */
     List<SysRole> findRolesByMenuId(@Param("menuId") Integer menuId);
+
 }
