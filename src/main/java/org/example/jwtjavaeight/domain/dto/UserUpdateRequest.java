@@ -11,6 +11,9 @@ import javax.validation.constraints.Size;
 @Getter
 public class UserUpdateRequest {
     // Getters and Setters
+    @Size(max = 20)
+    private String nickName;
+
     @Email
     private String email;
 

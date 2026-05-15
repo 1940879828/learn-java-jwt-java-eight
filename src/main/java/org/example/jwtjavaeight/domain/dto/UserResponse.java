@@ -11,6 +11,7 @@ public class UserResponse {
     // Getters and Setters
     private Long id;
     private String username;
+    private String nickName;
     private String email;
     private String phone;
     private Integer status;

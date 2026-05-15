@@ -15,6 +15,8 @@ public class SysUser {
   private String username;
   /** 密码 */
   private String password;
+  /** 名字 */
+  private String nickName;
   /** 邮箱 */
   private String email;
   /** 手机号 */

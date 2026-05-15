@@ -6,6 +6,7 @@
         <id column="id" property="id"/>
         <result column="username" property="username"/>
         <result column="password" property="password"/>
+        <result column="nick_name" property="nickName"/>
         <result column="email" property="email"/>
         <result column="phone" property="phone"/>
         <result column="status" property="status"/>
@@ -16,25 +17,25 @@
     </resultMap>
 
     <select id="findByUsername" resultMap="BaseResultMap">
-        SELECT id, username, password, email, phone, status, create_time, failed_attempts, lock_time
+        SELECT id, username, password, nick_name, email, phone, status, create_time, failed_attempts, lock_time
         FROM sys_user
         WHERE username = #{username}
     </select>
 
     <select id="findById" resultMap="BaseResultMap">
-        SELECT id, username, password, email, phone, status, create_time, failed_attempts, lock_time
+        SELECT id, username, password, nick_name, email, phone, status, create_time, failed_attempts, lock_time
         FROM sys_user
         WHERE id = #{id}
     </select>
 
     <select id="findByEmail" resultMap="BaseResultMap">
-        SELECT id, username, password, email, phone, status, create_time, failed_attempts, lock_time
+        SELECT id, username, password, nick_name, email, phone, status, create_time, failed_attempts, lock_time
         FROM sys_user
         WHERE email = #{email}
     </select>
 
     <select id="findByUsernameWithLockInfo" resultMap="BaseResultMap">
-        SELECT id, username, password, email, phone, status, create_time, failed_attempts, lock_time,
+        SELECT id, username, password, nick_name, email, phone, status, create_time, failed_attempts, lock_time,
                CASE
                    WHEN lock_time IS NOT NULL THEN
                        GREATEST(0, 7200 - TIMESTAMPDIFF(SECOND, lock_time, NOW()))
@@ -45,8 +46,8 @@
     </select>
 
     <insert id="insert" parameterType="SysUser" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO sys_user (username, password, email, phone, status, create_time)
-        VALUES (#{username}, #{password}, #{email}, #{phone}, #{status}, #{createTime})
+        INSERT INTO sys_user (username, password, nick_name, email, phone, status, create_time)
+        VALUES (#{username}, #{password}, #{nickName}, #{email}, #{phone}, #{status}, #{createTime})
     </insert>
 
     <update id="incrementFailedAttempts">
@@ -84,7 +85,7 @@
     </select>
 
     <select id="findByFilter" resultMap="BaseResultMap">
-        SELECT id, username, password, email, phone, status, create_time, failed_attempts, lock_time
+        SELECT id, username, password, nick_name, email, phone, status, create_time, failed_attempts, lock_time
         FROM sys_user
         <where>
             <if test="filter.keyword != null and filter.keyword != ''">
@@ -148,6 +149,7 @@
         UPDATE sys_user
         <set>
             <if test="username != null">username = #{username},</if>
+            <if test="nickName != null">nick_name = #{nickName},</if>
             <if test="email != null">email = #{email},</if>
             <if test="phone != null">phone = #{phone},</if>
             <if test="status != null">status = #{status},</if>

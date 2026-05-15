@@ -118,6 +118,7 @@ public class UserServiceImpl implements UserService {
         SysUser user = new SysUser();
         user.setUsername(request.getUsername());
         user.setPassword(passwordEncoder.encode(request.getPassword()));
+        user.setNickName(request.getNickName());
         user.setEmail(request.getEmail());
         user.setPhone(request.getPhone());
         user.setStatus(1);
@@ -146,6 +147,7 @@ public class UserServiceImpl implements UserService {
 
         SysUser updateUser = new SysUser();
         updateUser.setId(id);
+        updateUser.setNickName(request.getNickName());
         updateUser.setEmail(request.getEmail());
         updateUser.setPhone(request.getPhone());
         updateUser.setStatus(request.getStatus());
@@ -330,6 +332,7 @@ public class UserServiceImpl implements UserService {
         UserResponse response = new UserResponse();
         response.setId(user.getId());
         response.setUsername(user.getUsername());
+        response.setNickName(user.getNickName());
         response.setEmail(user.getEmail());
         response.setPhone(user.getPhone());
         response.setStatus(user.getStatus());

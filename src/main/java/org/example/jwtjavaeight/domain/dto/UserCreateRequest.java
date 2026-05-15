@@ -21,6 +21,9 @@ public class UserCreateRequest {
     @Size(min = 6, max = 64)
     private String password;
 
+    @Size(max = 20)
+    private String nickName;
+
     @Email
     @NotBlank
     private String email;
