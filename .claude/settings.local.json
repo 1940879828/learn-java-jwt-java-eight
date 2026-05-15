@@ -46,7 +46,10 @@
       "PowerShell(Get-ChildItem *)",
       "WebFetch(domain:raw.githubusercontent.com)",
       "Bash(gh api *)",
-      "WebFetch(domain:api.github.com)"
+      "WebFetch(domain:api.github.com)",
+      "Skill(superpowers:writing-plans)",
+      "Skill(superpowers:executing-plans)",
+      "Skill(superpowers:finishing-a-development-branch)"
     ]
   }
 }
