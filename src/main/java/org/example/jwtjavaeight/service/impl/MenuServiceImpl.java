@@ -287,9 +287,7 @@ public class MenuServiceImpl implements MenuService {
                 node.setParentId(menu.getParentId());
                 node.setMenuName(menu.getMenuName());
                 node.setMenuCode(menu.getMenuCode());
-                node.setMenuType(menu.getMenuType() != null
-                        ? org.example.jwtjavaeight.enums.MenuTypeEnum.fromCode(menu.getMenuType())
-                        : null);
+                node.setMenuType(menu.getMenuType() != null ? MenuTypeEnum.fromCode(menu.getMenuType()) : null);
                 node.setPath(menu.getPath());
                 node.setComponent(menu.getComponent());
                 node.setPerms(menu.getPerms());
