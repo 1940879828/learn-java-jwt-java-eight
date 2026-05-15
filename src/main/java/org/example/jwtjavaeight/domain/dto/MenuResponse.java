@@ -4,8 +4,6 @@ import lombok.Getter;
 import lombok.Setter;
 import org.example.jwtjavaeight.enums.MenuTypeEnum;
 
-import java.time.OffsetDateTime;
-
 @Setter
 @Getter
 public class MenuResponse {
@@ -23,7 +21,7 @@ public class MenuResponse {
     private Boolean visible;
     private Integer status;
     private String createBy;
-    private OffsetDateTime createTime;
+    private Long createTime;
     private String remark;
 
 }

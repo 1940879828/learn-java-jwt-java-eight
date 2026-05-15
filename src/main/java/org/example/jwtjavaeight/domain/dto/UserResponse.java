@@ -3,8 +3,6 @@ package org.example.jwtjavaeight.domain.dto;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.time.OffsetDateTime;
-
 @Setter
 @Getter
 public class UserResponse {
@@ -17,7 +15,7 @@ public class UserResponse {
     private Integer status;
     private Boolean locked;
     private String createBy;
-    private OffsetDateTime createTime;
+    private Long createTime;
     private String remark;
 
 }
