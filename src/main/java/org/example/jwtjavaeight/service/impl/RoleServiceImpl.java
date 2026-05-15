@@ -20,6 +20,7 @@ import org.example.jwtjavaeight.mapper.MenuMapper;
 import org.example.jwtjavaeight.mapper.RoleMapper;
 import org.example.jwtjavaeight.mapper.RoleMenuMapper;
 import org.example.jwtjavaeight.service.RoleService;
+import org.example.jwtjavaeight.utils.DateUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -156,10 +157,7 @@ public class RoleServiceImpl implements RoleService {
         response.setVisible(menu.getVisible() != null && menu.getVisible() == 1);
         response.setStatus(menu.getStatus());
         response.setCreateBy(menu.getCreateBy());
-        if (menu.getCreateTime() != null) {
-            response.setCreateTime(menu.getCreateTime().toInstant()
-                    .atOffset(java.time.ZoneOffset.UTC));
-        }
+        response.setCreateTime(DateUtils.toEpochSeconds(menu.getCreateTime()));
         response.setRemark(menu.getRemark());
         return response;
     }

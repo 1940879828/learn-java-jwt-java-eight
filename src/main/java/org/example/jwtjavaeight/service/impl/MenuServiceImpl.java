@@ -8,11 +8,13 @@ import org.example.jwtjavaeight.domain.dto.MenuUpdateRequest;
 import org.example.jwtjavaeight.domain.dto.PageResponse;
 import org.example.jwtjavaeight.domain.dto.RoleResponse;
 import org.example.jwtjavaeight.domain.entity.SysMenu;
+import org.example.jwtjavaeight.enums.MenuTypeEnum;
 import org.example.jwtjavaeight.exception.ResourceNotFoundException;
 import org.example.jwtjavaeight.domain.entity.SysRole;
 import org.example.jwtjavaeight.mapper.MenuMapper;
 import org.example.jwtjavaeight.mapper.RoleMapper;
 import org.example.jwtjavaeight.service.MenuService;
+import org.example.jwtjavaeight.utils.DateUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -241,10 +243,7 @@ public class MenuServiceImpl implements MenuService {
         }
 
         response.setCreateBy(role.getCreateBy());
-        if (role.getCreateTime() != null) {
-            response.setCreateTime(role.getCreateTime().toInstant()
-                    .atOffset(java.time.ZoneOffset.UTC));
-        }
+        response.setCreateTime(DateUtils.toEpochSeconds(role.getCreateTime()));
         response.setRemark(role.getRemark());
         return response;
     }
@@ -255,9 +254,7 @@ public class MenuServiceImpl implements MenuService {
         response.setParentId(menu.getParentId());
         response.setMenuName(menu.getMenuName());
         response.setMenuCode(menu.getMenuCode());
-        response.setMenuType(menu.getMenuType() != null
-                ? org.example.jwtjavaeight.enums.MenuTypeEnum.fromCode(menu.getMenuType())
-                : null);
+        response.setMenuType(menu.getMenuType() != null ? MenuTypeEnum.fromCode(menu.getMenuType()) : null);
         response.setPath(menu.getPath());
         response.setComponent(menu.getComponent());
         response.setPerms(menu.getPerms());
@@ -266,10 +263,7 @@ public class MenuServiceImpl implements MenuService {
         response.setVisible(menu.getVisible() != null && menu.getVisible() == 1);
         response.setStatus(menu.getStatus());
         response.setCreateBy(menu.getCreateBy());
-        if (menu.getCreateTime() != null) {
-            response.setCreateTime(menu.getCreateTime().toInstant()
-                    .atOffset(java.time.ZoneOffset.UTC));
-        }
+        response.setCreateTime(DateUtils.toEpochSeconds(menu.getCreateTime()));
         response.setRemark(menu.getRemark());
         return response;
     }
@@ -304,10 +298,7 @@ public class MenuServiceImpl implements MenuService {
                 node.setVisible(menu.getVisible() != null && menu.getVisible() == 1);
                 node.setStatus(menu.getStatus());
                 node.setCreateBy(menu.getCreateBy());
-                if (menu.getCreateTime() != null) {
-                    node.setCreateTime(menu.getCreateTime().toInstant()
-                            .atOffset(java.time.ZoneOffset.UTC));
-                }
+                node.setCreateTime(DateUtils.toEpochSeconds(menu.getCreateTime()));
                 node.setRemark(menu.getRemark());
 
                 List<MenuTreeNode> children = buildMenuTree(menus, menu.getId());
