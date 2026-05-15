@@ -1,10 +1,10 @@
 package org.example.jwtjavaeight.common;
 
 import org.example.jwtjavaeight.enums.ErrorCode;
+import org.example.jwtjavaeight.utils.DateUtils;
 import org.slf4j.MDC;
 
 import java.io.Serializable;
-import java.time.OffsetDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -22,7 +22,7 @@ public class Result<T> implements Serializable {
   private String message;
   private T data;
   private String traceId;
-  private OffsetDateTime timestamp;
+  private Long timestamp;
 
   public static <T> Result<T> success(T data) {
     Result<T> result = new Result<>();
@@ -30,7 +30,7 @@ public class Result<T> implements Serializable {
     result.setMessage(ErrorCode.SUCCESS.getMessage());
     result.setData(data);
     result.setTraceId(MDC.get("traceId"));
-    result.setTimestamp(OffsetDateTime.now());
+    result.setTimestamp(DateUtils.nowEpochSeconds());
     return result;
   }
 
@@ -39,7 +39,7 @@ public class Result<T> implements Serializable {
     result.setCode(ErrorCode.SUCCESS.getCode());
     result.setMessage(ErrorCode.SUCCESS.getMessage());
     result.setTraceId(MDC.get("traceId"));
-    result.setTimestamp(OffsetDateTime.now());
+    result.setTimestamp(DateUtils.nowEpochSeconds());
     return result;
   }
 
@@ -48,7 +48,7 @@ public class Result<T> implements Serializable {
     result.setCode(code);
     result.setMessage(message);
     result.setTraceId(MDC.get("traceId"));
-    result.setTimestamp(OffsetDateTime.now());
+    result.setTimestamp(DateUtils.nowEpochSeconds());
     return result;
   }
 
@@ -58,7 +58,7 @@ public class Result<T> implements Serializable {
     result.setMessage(message);
     result.setData(data);
     result.setTraceId(MDC.get("traceId"));
-    result.setTimestamp(OffsetDateTime.now());
+    result.setTimestamp(DateUtils.nowEpochSeconds());
     return result;
   }
 
@@ -67,7 +67,7 @@ public class Result<T> implements Serializable {
     result.setCode(errorCode.getCode());
     result.setMessage(message);
     result.setTraceId(MDC.get("traceId"));
-    result.setTimestamp(OffsetDateTime.now());
+    result.setTimestamp(DateUtils.nowEpochSeconds());
     return result;
   }
 }
