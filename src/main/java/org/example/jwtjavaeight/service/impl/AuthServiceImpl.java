@@ -6,13 +6,9 @@ import org.example.jwtjavaeight.config.JwtConfig;
 import org.example.jwtjavaeight.constants.SecurityConstants;
 import org.example.jwtjavaeight.domain.dto.LoginResponse;
 import org.example.jwtjavaeight.domain.dto.RefreshRequest;
-import org.example.jwtjavaeight.domain.dto.RegisterRequest;
 import org.example.jwtjavaeight.domain.entity.SysRefreshToken;
 import org.example.jwtjavaeight.domain.entity.SysUser;
-import org.example.jwtjavaeight.enums.ErrorCode;
-import org.example.jwtjavaeight.exception.BusinessException;
 import org.example.jwtjavaeight.exception.TokenExpiredException;
-import org.example.jwtjavaeight.exception.UsernameExistsException;
 import org.example.jwtjavaeight.mapper.RefreshTokenMapper;
 import org.example.jwtjavaeight.mapper.UserMapper;
 import org.example.jwtjavaeight.service.AuthService;
@@ -20,7 +16,6 @@ import org.example.jwtjavaeight.utils.HashUtil;
 import org.example.jwtjavaeight.utils.JwtUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -33,47 +28,17 @@ public class AuthServiceImpl implements AuthService {
   private final JwtConfig jwtConfig;
   private final RefreshTokenMapper refreshTokenMapper;
   private final UserMapper userMapper;
-  private final PasswordEncoder passwordEncoder;
 
   public AuthServiceImpl(
       JwtUtil jwtUtil,
       JwtConfig jwtConfig,
       RefreshTokenMapper refreshTokenMapper,
-      UserMapper userMapper,
-      PasswordEncoder passwordEncoder) {
+      UserMapper userMapper
+  ) {
     this.jwtUtil = jwtUtil;
     this.jwtConfig = jwtConfig;
     this.refreshTokenMapper = refreshTokenMapper;
     this.userMapper = userMapper;
-    this.passwordEncoder = passwordEncoder;
-  }
-
-  @Override
-  @Transactional
-  public void register(RegisterRequest registerRequest) {
-    log.info("[AuthService] 开始注册, 用户名: {}, 邮箱: {}", registerRequest.getUsername(), registerRequest.getEmail());
-
-    SysUser existingUser = userMapper.findByUsername(registerRequest.getUsername());
-    if (existingUser != null) {
-      log.warn("[AuthService] 注册失败, 用户名已存在: {}", registerRequest.getUsername());
-      throw new UsernameExistsException();
-    }
-
-    SysUser existingEmail = userMapper.findByEmail(registerRequest.getEmail());
-    if (existingEmail != null) {
-      log.warn("[AuthService] 注册失败, 邮箱已存在: {}", registerRequest.getEmail());
-      throw new BusinessException(ErrorCode.DUPLICATE_RESOURCE, "邮箱已被注册");
-    }
-
-    SysUser user = new SysUser();
-    user.setUsername(registerRequest.getUsername());
-    user.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
-    user.setEmail(registerRequest.getEmail());
-    user.setStatus(1);
-    user.setCreateTime(new Date());
-
-    userMapper.insert(user);
-    log.info("[AuthService] 注册成功, 用户ID: {}, 用户名: {}", user.getId(), user.getUsername());
   }
 
   @Override
@@ -133,12 +98,5 @@ public class AuthServiceImpl implements AuthService {
   public void logout(Long userId) {
     refreshTokenMapper.deleteByUserId(userId);
     log.info("[AuthService] 用户登出成功, userId: {}", userId);
-  }
-
-  @Override
-  @Transactional
-  public void unlockUser(Long userId) {
-    userMapper.unlockUser(userId);
-    log.info("[AuthService] 用户已解锁, userId: {}", userId);
   }
 }

@@ -133,9 +133,9 @@ CREATE TABLE IF NOT EXISTS `sys_role_menu` (
 -- ============================================
 -- 用户名: admin
 -- 密码: 123456
--- BCrypt加密: $2a$10$N.zmdr9k7uOCQb376NoUnuTJ8iAt6Z2EHCwf0r.IQmBz0Uoz4Lx1K
+-- BCrypt加密: $2a$10$FZLMKgTWmNleYgXqJndMW.kfEmCWfozScMiZYAn4zmZ8yGq/NOtSa
 INSERT INTO `sys_user` (`username`, `password`, `email`, `phone`, `status`) VALUES
-('admin', '$2a$10$N.zmdr9k7uOCQb376NoUnuTJ8iAt6Z2EHCwf0r.IQmBz0Uoz4Lx1K', 'admin@system.local', NULL, 1);
+('admin', '$2a$10$FZLMKgTWmNleYgXqJndMW.kfEmCWfozScMiZYAn4zmZ8yGq/NOtSa', 'admin@system.local', NULL, 1);
 
 -- ============================================
 -- 9. 初始化默认角色
